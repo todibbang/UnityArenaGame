@@ -7,6 +7,7 @@ public class Effect {
     int SenderId;
     EffectType Effecttype;
     float Modifier;
+    float EffectCooldown;
 
 
     public enum EffectType

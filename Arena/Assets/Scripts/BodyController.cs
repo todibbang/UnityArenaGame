@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class BodyController : MonoBehaviour {
 
@@ -31,7 +32,8 @@ public class BodyController : MonoBehaviour {
     public GameObject ForthAbility;
 
 	public List<GameObject> ActiveCasters;
-    
+    public List<string> ActiveCasterNames;
+
     /*
     GameObject Ability;
     float CastTime;
@@ -60,7 +62,7 @@ public class BodyController : MonoBehaviour {
             {
                 if (Input.GetMouseButtonDown(1))
                 {
-                    if (hit.collider.tag == "Enemy") AutoAttack.GetComponent<Ability>().UseAbility(hit, gameObject);
+                    if (hit.collider.tag == "Enemy") AutoAttack.GetComponent<Ability>().UseAbility(gameObject);
                     else if (hit.collider.tag == "Ground")  //NewActivity(ActivityType.Move, null, 0, 0, false, null, );
                     {
 						//gameObject.SendMessage ("OverruleMovement");
@@ -68,14 +70,17 @@ public class BodyController : MonoBehaviour {
                         MoveToPosition = new Vector3(hit.point.x, transform.position.y, hit.point.z);
                     }
                 }
-                if (Input.GetKeyDown(KeyCode.Q)) FirstAbility.GetComponent<Ability>().UseAbility(hit, gameObject);
-                if (Input.GetKeyDown(KeyCode.W)) SecondAbility.GetComponent<Ability>().UseAbility(hit, gameObject);
-                if (Input.GetKeyDown(KeyCode.E)) ThirdAbility.GetComponent<Ability>().UseAbility(hit, gameObject);
-                if (Input.GetKeyDown(KeyCode.R)) ForthAbility.GetComponent<Ability>().UseAbility(hit, gameObject);
             }
+            if (Input.GetKeyDown(KeyCode.Q)) FirstAbility.GetComponent<Ability>().UseAbility(gameObject);
+            if (Input.GetKeyDown(KeyCode.W)) SecondAbility.GetComponent<Ability>().UseAbility(gameObject);
+            if (Input.GetKeyDown(KeyCode.E)) ThirdAbility.GetComponent<Ability>().UseAbility(gameObject);
+            if (Input.GetKeyDown(KeyCode.R)) ForthAbility.GetComponent<Ability>().UseAbility(gameObject);
         }
-        
-        if(Moving)
+
+        //if (GlobalCooldown > 0) GlobalCooldown--;
+
+
+        if (Moving)
         {
             Move(MoveToPosition);
         }
@@ -84,7 +89,7 @@ public class BodyController : MonoBehaviour {
     void Move(Vector3 position)
     {
         float step = Stats.GetSpeed() * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, position, step);
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(position.x, transform.position.y, position.z), step);
         if (Vector3.Distance(transform.position, position) < 0.1)
             Moving = false;
     }
@@ -106,13 +111,20 @@ public class BodyController : MonoBehaviour {
         print(gameObject.tag + " is hit!!!");
     }
 
-	void AddCaster(GameObject caster) {
+	public void AddCaster(GameObject caster, GameObject ability) {
 		Moving = false;
-		ActiveCasters.Add (caster);
-	}
+        if (ActiveCasterNames.Any(c => c == ability.name)) Destroy(caster);
+        else
+        {
+            ActiveCasters.Add(caster);
+            ActiveCasterNames.Add(ability.name);
+        }
+    }
 
 	void RemoveCaster(GameObject caster) {
-		ActiveCasters.Remove (caster);
+        print("index of: " + ActiveCasters.IndexOf(caster));
+        ActiveCasterNames.RemoveAt(ActiveCasters.IndexOf(caster));
+        ActiveCasters.Remove (caster);
 		Destroy(caster);
 	}
 

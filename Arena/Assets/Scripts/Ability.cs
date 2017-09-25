@@ -7,38 +7,51 @@ public class Ability : MonoBehaviour {
     public Effect.EffectType EffectType;
     public float Modifier;
 
-
     public int CastTime;
     public int CastTimes = 1;
     public float TravelDistance;
     public AbilityType ActivityType;
     public int Range;
+    public float Speed;
+    public int LiveTime;
     public bool CanMove;
 
     //public Reaction AfterCastReaction;
     public Reaction CollisionReaction;
     public Reaction DistanceTraveledReaction;
-    public float Speed;
-
+    public GameObject Effect;
     public GameObject AbilityCaster;
 
     GameObject TargetGameObject;
     Vector3 StartPosition;
     Vector3 TargetPosition;
     GameObject Sender;
+    int LivedTime;
 
     public enum Reaction
     {
         None, Destroy, Effect, Recast
     }
 
-    public enum AbilityType { TargetAbility, SkillShotAbility}
+    public enum AbilityType { TargetAbility, SkillShotAbility, Aoe}
 
 
-    public void UseAbility(RaycastHit hit, GameObject sender)
+    public void UseAbility(GameObject sender)
     {
-		if (ActivityType == AbilityType.TargetAbility && hit.collider.tag == "Ground")
+        RaycastHit hit;
+        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        string layer = "Ground";
+        if (ActivityType == AbilityType.TargetAbility) layer = "Body";
+        if (Physics.Raycast(ray, out hit, 10000, (1 << LayerMask.NameToLayer(layer))))
+        {
+            
+        }
+        if (hit.collider == null) return;
+
+        if (ActivityType == AbilityType.TargetAbility && hit.collider.tag == "Ground")
 			return;
+
+
         GameObject caster = Instantiate(AbilityCaster, sender.transform) as GameObject;
         var abilityCaster = caster.GetComponent<AbilityCaster>();
         abilityCaster.StartCasting(gameObject, hit, sender);
@@ -58,26 +71,35 @@ public class Ability : MonoBehaviour {
         var x = clickPosition.x - start.x;
         var z = clickPosition.z - start.z;
         StartPosition = start;
-        TargetPosition = new Vector3(start.x + (x * 10), 1.5f, start.z + (z * 10));
+        if (ActivityType == AbilityType.Aoe) TargetPosition = new Vector3(clickPosition.x, transform.position.y, clickPosition.z);
+        else TargetPosition = new Vector3(start.x + (x * 1000), transform.position.y, start.z + (z * 1000));
     }
 
     // Use this for initialization
     void Start () {
-        transform.position = StartPosition;
+        if (ActivityType == AbilityType.Aoe) transform.position = TargetPosition;
+        else transform.position = StartPosition;
     }
 	
 	// Update is called once per frame
 	void Update () {
-        Vector3 position = new Vector3();
-        if (TargetGameObject != null) position = TargetGameObject.transform.position;
-        else if (TargetPosition != null) position = TargetPosition;
-
-        float step = Speed * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, position, step);
-
-        if (ActivityType == AbilityType.SkillShotAbility && Vector3.Distance(transform.position, StartPosition) > TravelDistance)
+        if(ActivityType == AbilityType.Aoe)
         {
-            AbilityReaction(DistanceTraveledReaction);
+            LivedTime++;
+            if(LivedTime >= LiveTime) AbilityReaction(DistanceTraveledReaction);
+        } else
+        {
+            Vector3 position = new Vector3();
+            if (TargetGameObject != null) position = TargetGameObject.transform.position;
+            else if (TargetPosition != null) position = TargetPosition;
+
+            float step = Speed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, position, step);
+
+            if (ActivityType == AbilityType.SkillShotAbility && Vector3.Distance(transform.position, StartPosition) > TravelDistance)
+            {
+                AbilityReaction(DistanceTraveledReaction);
+            }
         }
     }
 
@@ -85,7 +107,7 @@ public class Ability : MonoBehaviour {
     {
         print(other.tag);
         print(Sender.tag);
-		if (other.tag != Sender.tag && other.tag != "Caster")
+		if (other.tag != Sender.tag && other.tag != "Caster" && other.tag != "Ability")
         {
             //print(other.tag);
             //print(TargetGameObject.tag);
@@ -103,6 +125,12 @@ public class Ability : MonoBehaviour {
         switch (reaction)
         {
             case Reaction.Destroy:
+                Destroy(gameObject);
+                break;
+            case Reaction.Effect:
+                GameObject newObject = Instantiate(Effect) as GameObject;
+                var proj = newObject.GetComponent<Ability>();
+                proj.Prepare(transform.position, transform.position, Sender);
                 Destroy(gameObject);
                 break;
         }
