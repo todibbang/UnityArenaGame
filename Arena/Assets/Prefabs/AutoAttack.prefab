@@ -111,13 +111,17 @@ MonoBehaviour:
   EffectType: 1
   Modifier: 0
   CastTime: 50
+  CastTimes: 1
   TravelDistance: 0
-  ActivityType: 3
+  ActivityType: 0
   Range: 2
-  AfterCastReaction: 2
+  CanMove: 0
+  AfterCastReaction: 3
   CollisionReaction: 0
   DistanceTraveledReaction: 0
   Speed: 8
+  AbilityCaster: {fileID: 1453245980911748, guid: fc01375ab89ae0b4295ac4935b659653,
+    type: 2}
 --- !u!135 &135767658681968054
 SphereCollider:
   m_ObjectHideFlags: 1

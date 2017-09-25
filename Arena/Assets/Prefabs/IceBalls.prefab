@@ -9,47 +9,47 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1518482883245924}
+  m_RootGameObject: {fileID: 1964609554678804}
   m_IsPrefabParent: 1
---- !u!1 &1518482883245924
+--- !u!1 &1964609554678804
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4971085563571956}
-  - component: {fileID: 33612637267386622}
-  - component: {fileID: 65164151010150116}
-  - component: {fileID: 23675029584103746}
-  - component: {fileID: 54438475936695678}
-  - component: {fileID: 114937182099508220}
+  - component: {fileID: 4618481793014986}
+  - component: {fileID: 33124680556029632}
+  - component: {fileID: 65819309631530292}
+  - component: {fileID: 23059780642063428}
+  - component: {fileID: 54799067313338732}
+  - component: {fileID: 114624559280682950}
   m_Layer: 0
-  m_Name: FireBall
+  m_Name: IceBalls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4971085563571956
+--- !u!4 &4618481793014986
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1518482883245924}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.707192, y: 0.3773585, z: 5.2799454}
+  m_GameObject: {fileID: 1964609554678804}
+  m_LocalRotation: {x: 0.8021127, y: -0.4631, z: 0.18851636, w: 0.3265199}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23675029584103746
+  m_LocalEulerAnglesHint: {x: 135.7, y: 0, z: 60}
+--- !u!23 &23059780642063428
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1518482883245924}
+  m_GameObject: {fileID: 1964609554678804}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -57,7 +57,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 080c257349bf7c74ea53e551f9250b5a, type: 2}
+  - {fileID: 2100000, guid: 6208a2615186c764da80bebc2dba13ab, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -75,19 +75,19 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!33 &33612637267386622
+--- !u!33 &33124680556029632
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1518482883245924}
+  m_GameObject: {fileID: 1964609554678804}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &54438475936695678
+--- !u!54 &54799067313338732
 Rigidbody:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1518482883245924}
+  m_GameObject: {fileID: 1964609554678804}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
@@ -97,24 +97,24 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &65164151010150116
+--- !u!65 &65819309631530292
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1518482883245924}
+  m_GameObject: {fileID: 1964609554678804}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114937182099508220
+--- !u!114 &114624559280682950
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1518482883245924}
+  m_GameObject: {fileID: 1964609554678804}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7702342c20abe354490883eb80137cec, type: 3}
@@ -123,14 +123,14 @@ MonoBehaviour:
   EffectType: 0
   Modifier: 0
   CastTime: 30
-  CastTimes: 1
+  CastTimes: 5
   TravelDistance: 10
-  ActivityType: 1
-  Range: 0
-  CanMove: 0
+  ActivityType: 0
+  Range: 15
+  CanMove: 1
   AfterCastReaction: 0
   CollisionReaction: 0
-  DistanceTraveledReaction: 1
+  DistanceTraveledReaction: 0
   Speed: 4
   AbilityCaster: {fileID: 1453245980911748, guid: fc01375ab89ae0b4295ac4935b659653,
     type: 2}

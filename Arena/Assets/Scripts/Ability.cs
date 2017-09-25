@@ -9,14 +9,18 @@ public class Ability : MonoBehaviour {
 
 
     public int CastTime;
+    public int CastTimes = 1;
     public float TravelDistance;
-    public BodyController.ActivityType ActivityType;
+    public AbilityType ActivityType;
     public int Range;
+    public bool CanMove;
 
     public Reaction AfterCastReaction;
     public Reaction CollisionReaction;
     public Reaction DistanceTraveledReaction;
     public float Speed;
+
+    public GameObject AbilityCaster;
 
     GameObject TargetGameObject;
     Vector3 StartPosition;
@@ -25,13 +29,18 @@ public class Ability : MonoBehaviour {
 
     public enum Reaction
     {
-        Destroy, Effect, Recast
+        None, Destroy, Effect, Recast
     }
+
+    public enum AbilityType { TargetAbility, SkillShotAbility}
 
 
     public void UseAbility(RaycastHit hit, GameObject sender)
     {
-        sender.GetComponent<BodyController>().NewActivity(ActivityType, gameObject, CastTime, Range, hit.collider.gameObject, new Vector3(hit.point.x, transform.position.y, hit.point.z));
+        GameObject caster = Instantiate(AbilityCaster, sender.transform) as GameObject;
+        var abilityCaster = caster.GetComponent<AbilityCaster>();
+        abilityCaster.StartCasting(gameObject, hit, sender);
+        abilityCaster.NewActivity(ActivityType, CastTime, CastTimes, Range, CanMove);
     }
 
     public void Prepare(GameObject target, Vector3 start, GameObject sender)
@@ -48,10 +57,7 @@ public class Ability : MonoBehaviour {
         var z = clickPosition.z - start.z;
         StartPosition = start;
         TargetPosition = new Vector3(start.x + (x * 10), 1.5f, start.z + (z * 10));
-        //AbilityReaction(AfterCastReaction);
     }
-
-
 
     // Use this for initialization
     void Start () {
@@ -67,7 +73,7 @@ public class Ability : MonoBehaviour {
         float step = Speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, position, step);
 
-        if (ActivityType == BodyController.ActivityType.SkillShotAbility && Vector3.Distance(transform.position, StartPosition) > TravelDistance)
+        if (ActivityType == AbilityType.SkillShotAbility && Vector3.Distance(transform.position, StartPosition) > TravelDistance)
         {
             AbilityReaction(DistanceTraveledReaction);
         }
@@ -81,7 +87,7 @@ public class Ability : MonoBehaviour {
         {
             //print(other.tag);
             //print(TargetGameObject.tag);
-            if (ActivityType == BodyController.ActivityType.TargetAbility && other.tag == TargetGameObject.tag || ActivityType == BodyController.ActivityType.SkillShotAbility)
+            if (ActivityType == AbilityType.TargetAbility && other.tag == TargetGameObject.tag || ActivityType == AbilityType.SkillShotAbility)
             {
                 other.gameObject.SendMessage("Hit", new Effect());
             }
