@@ -29,6 +29,8 @@ public class BodyController : MonoBehaviour {
     public GameObject SecondAbility;
     public GameObject ThirdAbility;
     public GameObject ForthAbility;
+
+	public List<GameObject> ActiveCasters;
     
     /*
     GameObject Ability;
@@ -61,6 +63,7 @@ public class BodyController : MonoBehaviour {
                     if (hit.collider.tag == "Enemy") AutoAttack.GetComponent<Ability>().UseAbility(hit, gameObject);
                     else if (hit.collider.tag == "Ground")  //NewActivity(ActivityType.Move, null, 0, 0, false, null, );
                     {
+						//gameObject.SendMessage ("OverruleMovement");
                         Moving = true;
                         MoveToPosition = new Vector3(hit.point.x, transform.position.y, hit.point.z);
                     }
@@ -85,14 +88,35 @@ public class BodyController : MonoBehaviour {
         if (Vector3.Distance(transform.position, position) < 0.1)
             Moving = false;
     }
-    
-    void StopMoving()
-    {
-        Moving = false;
-    }
+		
+	void AttemptToContinue(GameObject caster) {
+		var abilityCaster = caster.GetComponent<AbilityCaster> ();
+		if (Moving) {
+			abilityCaster.OverruleMovement();
+		}
+
+		print (ActiveCasters.Count + " index: " + ActiveCasters.IndexOf (caster));
+		if (ActiveCasters.Count > 1 && ActiveCasters.IndexOf(caster) != ActiveCasters.Count-1) {
+			caster.SendMessage("Stop");
+		}
+	}
 
     void Hit(Effect effect)
     {
         print(gameObject.tag + " is hit!!!");
     }
+
+	void AddCaster(GameObject caster) {
+		Moving = false;
+		ActiveCasters.Add (caster);
+	}
+
+	void RemoveCaster(GameObject caster) {
+		ActiveCasters.Remove (caster);
+		Destroy(caster);
+	}
+
+	public bool FirstInqueue(GameObject caster) {
+		return ActiveCasters.IndexOf (caster) == 0;
+	}
 }

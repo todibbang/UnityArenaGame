@@ -15,7 +15,7 @@ public class Ability : MonoBehaviour {
     public int Range;
     public bool CanMove;
 
-    public Reaction AfterCastReaction;
+    //public Reaction AfterCastReaction;
     public Reaction CollisionReaction;
     public Reaction DistanceTraveledReaction;
     public float Speed;
@@ -37,6 +37,8 @@ public class Ability : MonoBehaviour {
 
     public void UseAbility(RaycastHit hit, GameObject sender)
     {
+		if (ActivityType == AbilityType.TargetAbility && hit.collider.tag == "Ground")
+			return;
         GameObject caster = Instantiate(AbilityCaster, sender.transform) as GameObject;
         var abilityCaster = caster.GetComponent<AbilityCaster>();
         abilityCaster.StartCasting(gameObject, hit, sender);
@@ -83,7 +85,7 @@ public class Ability : MonoBehaviour {
     {
         print(other.tag);
         print(Sender.tag);
-        if (other.tag != Sender.tag)
+		if (other.tag != Sender.tag && other.tag != "Caster")
         {
             //print(other.tag);
             //print(TargetGameObject.tag);

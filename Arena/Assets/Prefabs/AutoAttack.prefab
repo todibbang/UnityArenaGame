@@ -74,6 +74,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33220398851466712
 MeshFilter:
@@ -111,15 +112,14 @@ MonoBehaviour:
   EffectType: 1
   Modifier: 0
   CastTime: 50
-  CastTimes: 1
+  CastTimes: 0
   TravelDistance: 0
   ActivityType: 0
-  Range: 2
+  Range: 8
   CanMove: 0
-  AfterCastReaction: 3
-  CollisionReaction: 0
+  CollisionReaction: 1
   DistanceTraveledReaction: 0
-  Speed: 8
+  Speed: 10
   AbilityCaster: {fileID: 1453245980911748, guid: fc01375ab89ae0b4295ac4935b659653,
     type: 2}
 --- !u!135 &135767658681968054

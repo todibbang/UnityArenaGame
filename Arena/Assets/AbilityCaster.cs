@@ -7,6 +7,7 @@ public class AbilityCaster : MonoBehaviour {
     GameObject AbilityObject;
     RaycastHit Hit;
     GameObject Sender;
+	BodyController SenderController;
     Vector3 StartPosition;
 
     float CastTime;
@@ -21,11 +22,14 @@ public class AbilityCaster : MonoBehaviour {
     int AbilityCastTimes;
     bool CanMove;
 
+	bool MovementOverruled;
+
     public void StartCasting(GameObject ability, RaycastHit hit, GameObject sender)
     {
         AbilityObject = ability;
         Hit = hit;
         Sender = sender;
+		SenderController = Sender.GetComponent<BodyController> ();
         StartPosition = Sender.transform.position;
     }
 
@@ -43,50 +47,56 @@ public class AbilityCaster : MonoBehaviour {
     void Start()
     {
         transform.position = Sender.transform.position;
-        Sender.SendMessage("StopMoving");
+		Sender.SendMessage("AddCaster", gameObject);
     }
 
     void Update()
     {
-        if (TargetAbilityRange > 0)
-        {
-            if (Vector3.Distance(TargetGameObject.transform.position, transform.position) > TargetAbilityRange)
-            {
-                Sender.SendMessage("Move", TargetGameObject.transform.position);
-                return;
-            }
-                
-        }
+		Sender.SendMessage ("AttemptToContinue", gameObject);
+		//Sender.SendMessage ("AttemptToAct", this);
 
-        CastTime++;
-        if (CastTime >= AbilityCastTime)
-        {
-            CastTime = 0;
-            switch (currentActivityType)
-            {
-                case Ability.AbilityType.TargetAbility:
-                    CastTargetAbility(AbilityObject, TargetGameObject);
-                    break;
-                case Ability.AbilityType.SkillShotAbility:
-                    CastSkillShot(AbilityObject, TargetPosition);
-                    break;
-            }
-            CastTimes++;
-            if(CastTimes >= AbilityCastTimes)
-                Destroy(gameObject);
-        }
+		if (SenderController.FirstInqueue (gameObject)) {
+			print(CanMove +" - "+ MovementOverruled);
+			if (!CanMove && MovementOverruled) Stop ();
 
-        
+			if (TargetAbilityRange > 0)
+			{
+				if (Vector3.Distance(TargetGameObject.transform.position, transform.position) > TargetAbilityRange)
+				{
+					if (MovementOverruled)
+						Stop ();
+					else if(!MovementOverruled){
+						Sender.SendMessage ("Move", TargetGameObject.transform.position);
+						return;
+					}
+				}
+			}
 
-        if (!CanMove)
-        {
-            if(Vector3.Distance(StartPosition, transform.position) > 0.1)  Destroy(gameObject);
-        }
+			CastTime++;
+			if (CastTime >= AbilityCastTime)
+			{
+				CastTime = 0;
+				switch (currentActivityType)
+				{
+				case Ability.AbilityType.TargetAbility:
+					CastTargetAbility(AbilityObject, TargetGameObject);
+					break;
+				case Ability.AbilityType.SkillShotAbility:
+					CastSkillShot(AbilityObject, TargetPosition);
+					break;
+				}
+				CastTimes++;
+				if (AbilityCastTimes > 0 && CastTimes >= AbilityCastTimes)
+					Stop ();
+				
 
-        if(TargetAbilityRange > 0)
-        {
-            if (Vector3.Distance(TargetGameObject.transform.position, transform.position) > TargetAbilityRange) Destroy(gameObject);
-        }
+			}
+
+			if(TargetAbilityRange > 0)
+			{
+				if (Vector3.Distance(TargetGameObject.transform.position, transform.position) > TargetAbilityRange) Stop();
+			}
+		}
     }
 
     void CastSkillShot(GameObject ability, Vector3 targetDirection)
@@ -102,4 +112,12 @@ public class AbilityCaster : MonoBehaviour {
         var proj = newObject.GetComponent<Ability>();
         proj.Prepare(target, transform.position, Sender.gameObject);
     }
+
+	public void OverruleMovement(){
+		MovementOverruled = true;
+	}
+
+	public void Stop() {
+		Sender.SendMessage ("RemoveCaster", gameObject);
+	}
 }
