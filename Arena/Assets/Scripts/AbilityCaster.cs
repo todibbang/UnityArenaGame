@@ -53,24 +53,21 @@ public class AbilityCaster : MonoBehaviour {
     void Update()
     {
 		Sender.SendMessage ("AttemptToContinue", gameObject);
-        //Sender.SendMessage ("AttemptToAct", this);
 
         var position = new Vector3();
         if (currentActivityType == Ability.AbilityType.TargetAbility) position = TargetGameObject.transform.position;
         else position = TargetPosition;
 
         if (SenderController.FirstInqueue (gameObject)) {
-			print(CanMove +" - "+ MovementOverruled);
+
+			//print (MovementOverruled);
+
 			if (!CanMove && MovementOverruled) Stop ();
 
 			if (TargetAbilityRange > 0)
 			{
-                
-
-                
                 if (Vector3.Distance(position, transform.position) > TargetAbilityRange)
 				{
-                    print("moving towatds point");
 					if (MovementOverruled)
 						Stop ();
 					else if(!MovementOverruled){
@@ -99,8 +96,6 @@ public class AbilityCaster : MonoBehaviour {
 				CastTimes++;
 				if (AbilityCastTimes > 0 && CastTimes >= AbilityCastTimes)
 					Stop ();
-				
-
 			}
 
 			if(TargetAbilityRange > 0)
@@ -129,7 +124,6 @@ public class AbilityCaster : MonoBehaviour {
 	}
 
 	public void Stop() {
-        print("Stopped!!!!");
 		Sender.SendMessage ("RemoveCaster", gameObject);
 	}
 }

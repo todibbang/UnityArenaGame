@@ -23,8 +23,9 @@ GameObject:
   - component: {fileID: 65164151010150116}
   - component: {fileID: 23675029584103746}
   - component: {fileID: 54438475936695678}
-  - component: {fileID: 114937182099508220}
-  m_Layer: 0
+  - component: {fileID: 114252121087911226}
+  - component: {fileID: 114973607438944518}
+  m_Layer: 10
   m_Name: FireBall
   m_TagString: Ability
   m_Icon: {fileID: 0}
@@ -74,6 +75,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33612637267386622
 MeshFilter:
@@ -109,7 +111,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114937182099508220
+--- !u!114 &114252121087911226
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -117,21 +119,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 1518482883245924}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7702342c20abe354490883eb80137cec, type: 3}
+  m_Script: {fileID: 11500000, guid: dd49fbc03788349acaec8829c673def9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EffectType: 0
-  Modifier: 0
-  CastTime: 1
-  CastTimes: 1
-  TravelDistance: 10
-  ActivityType: 1
-  Range: 0
-  Speed: 8
-  LiveTime: 0
+  Effect: {fileID: 114973607438944518}
+  CastTime: 0
+  ExecutionTimes: 1
   CanMove: 0
-  CollisionReaction: 1
-  DistanceTraveledReaction: 1
-  Effect: {fileID: 0}
-  AbilityCaster: {fileID: 1453245980911748, guid: fc01375ab89ae0b4295ac4935b659653,
-    type: 2}
+  Interraction: 0
+  CollisionReaction: 0
+  LifeExpired: 1
+  SecondaryAbility: {fileID: 0}
+  AbilityCaster: {fileID: 0}
+  TargetGameObject: {fileID: 0}
+  StartPosition: {x: 0, y: 0, z: 0}
+  TargetPosition: {x: 0, y: 0, z: 0}
+  Sender: {fileID: 0}
+  ProjectileSpeed: 0
+  TravelLength: 0
+--- !u!114 &114973607438944518
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1518482883245924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bdbef354fa50364798d1a31ced8cd09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Effecttype: 0
+  Damage: 0
+  Duration: 0
+  EffectTimes: 0
+  OverrulesControles: 0
+  EffectCooldown: 0

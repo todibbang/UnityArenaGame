@@ -23,8 +23,9 @@ GameObject:
   - component: {fileID: 136437708012023288}
   - component: {fileID: 23501954863216258}
   - component: {fileID: 54769886843219120}
-  - component: {fileID: 114761071850251626}
-  m_Layer: 0
+  - component: {fileID: 114262927614885612}
+  - component: {fileID: 114026813984886346}
+  m_Layer: 10
   m_Name: BlackHole
   m_TagString: Ability
   m_Icon: {fileID: 0}
@@ -74,6 +75,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33671741550737902
 MeshFilter:
@@ -97,7 +99,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114761071850251626
+--- !u!114 &114026813984886346
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -105,24 +107,43 @@ MonoBehaviour:
   m_GameObject: {fileID: 1322129952412404}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7702342c20abe354490883eb80137cec, type: 3}
+  m_Script: {fileID: 11500000, guid: 9bdbef354fa50364798d1a31ced8cd09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EffectType: 0
-  Modifier: 0
-  CastTime: 100
-  CastTimes: 1
-  TravelDistance: 0
-  ActivityType: 2
-  Range: 7
-  Speed: 0
-  LiveTime: 250
+  Effecttype: 0
+  Damage: 0
+  Duration: 0
+  EffectTimes: 0
+  OverrulesControles: 0
+  EffectCooldown: 0
+--- !u!114 &114262927614885612
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1322129952412404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436faa694169049c4bcac207d508f390, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Effect: {fileID: 114026813984886346}
+  CastTime: 0
+  ExecutionTimes: 1
   CanMove: 0
-  CollisionReaction: 0
-  DistanceTraveledReaction: 1
-  Effect: {fileID: 0}
+  Interraction: 0
+  CollisionReaction: 2
+  LifeExpired: 1
+  SecondaryAbility: {fileID: 1199030864639636, guid: 80ffb21afc2086844829ee8da7727b59,
+    type: 2}
   AbilityCaster: {fileID: 1453245980911748, guid: fc01375ab89ae0b4295ac4935b659653,
     type: 2}
+  TargetGameObject: {fileID: 0}
+  StartPosition: {x: 0, y: 0, z: 0}
+  TargetPosition: {x: 0, y: 0, z: 0}
+  Sender: {fileID: 0}
+  CastRange: 0
+  LiveDuration: 0
 --- !u!136 &136437708012023288
 CapsuleCollider:
   m_ObjectHideFlags: 1

@@ -74,6 +74,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33052144130823426
 MeshFilter:
@@ -107,14 +108,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a16d716b068dfe448c4bfdbc5abf129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TeamID: 0
   Stats: {fileID: 114192575613778448}
   AutoAttack: {fileID: 1393255466513296, guid: fb81b9786b0fb0143a5df6954bd0a751, type: 2}
   FirstAbility: {fileID: 1518482883245924, guid: 0fa07fc7b69ba724db37177caeff4685,
     type: 2}
   SecondAbility: {fileID: 1964609554678804, guid: 5beb1012117287d479bbd797693efeae,
     type: 2}
-  ThirdAbility: {fileID: 0}
-  ForthAbility: {fileID: 0}
+  ThirdAbility: {fileID: 1808128945360492, guid: 50c479a88a2584f82981c4e8ce28bf5f,
+    type: 2}
+  ForthAbility: {fileID: 1051917544981860, guid: 4d0c8a2a2fece294d9ae27ff4a02ad73,
+    type: 2}
+  ActiveCasters: []
+  ActiveCasterNames: []
+  JumpSpeed: 0
 --- !u!136 &136806882370369172
 CapsuleCollider:
   m_ObjectHideFlags: 1

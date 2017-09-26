@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 135712217990540480}
   - component: {fileID: 23001380546470322}
   - component: {fileID: 114049298523118510}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Caster
   m_TagString: Caster
   m_Icon: {fileID: 0}

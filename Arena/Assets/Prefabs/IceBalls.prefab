@@ -23,8 +23,9 @@ GameObject:
   - component: {fileID: 65819309631530292}
   - component: {fileID: 23059780642063428}
   - component: {fileID: 54799067313338732}
-  - component: {fileID: 114624559280682950}
-  m_Layer: 0
+  - component: {fileID: 114594074541356776}
+  - component: {fileID: 114539783352540036}
+  m_Layer: 10
   m_Name: IceBalls
   m_TagString: Ability
   m_Icon: {fileID: 0}
@@ -74,6 +75,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33124680556029632
 MeshFilter:
@@ -109,7 +111,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114624559280682950
+--- !u!114 &114539783352540036
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -117,21 +119,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 1964609554678804}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7702342c20abe354490883eb80137cec, type: 3}
+  m_Script: {fileID: 11500000, guid: 9bdbef354fa50364798d1a31ced8cd09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EffectType: 0
-  Modifier: 0
-  CastTime: 15
-  CastTimes: 5
-  TravelDistance: 10
-  ActivityType: 0
-  Range: 15
-  Speed: 12
-  LiveTime: 0
+  Effecttype: 0
+  Damage: 0
+  Duration: 0
+  EffectTimes: 0
+  OverrulesControles: 0
+  EffectCooldown: 0
+--- !u!114 &114594074541356776
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1964609554678804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fff399780bab40debefb56afb1b0779, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Effect: {fileID: 114539783352540036}
+  CastTime: 25
+  ExecutionTimes: 5
   CanMove: 1
-  CollisionReaction: 1
-  DistanceTraveledReaction: 0
-  Effect: {fileID: 0}
+  Interraction: 0
+  CollisionReaction: 0
+  LifeExpired: 1
+  SecondaryAbility: {fileID: 0}
   AbilityCaster: {fileID: 1453245980911748, guid: fc01375ab89ae0b4295ac4935b659653,
     type: 2}
+  TargetGameObject: {fileID: 0}
+  StartPosition: {x: 0, y: 0, z: 0}
+  TargetPosition: {x: 0, y: 0, z: 0}
+  Sender: {fileID: 0}
+  CastRange: 20
+  ProjectileSpeed: 25

@@ -23,8 +23,9 @@ GameObject:
   - component: {fileID: 136170495567494282}
   - component: {fileID: 23048141628718772}
   - component: {fileID: 54137588415868756}
-  - component: {fileID: 114771634555384644}
-  m_Layer: 0
+  - component: {fileID: 114486803949359476}
+  - component: {fileID: 114468705406884186}
+  m_Layer: 10
   m_Name: Blast
   m_TagString: Ability
   m_Icon: {fileID: 0}
@@ -74,6 +75,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33245011629908668
 MeshFilter:
@@ -97,7 +99,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114771634555384644
+--- !u!114 &114468705406884186
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -105,24 +107,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 1199030864639636}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7702342c20abe354490883eb80137cec, type: 3}
+  m_Script: {fileID: 11500000, guid: 9bdbef354fa50364798d1a31ced8cd09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EffectType: 0
-  Modifier: 0
-  CastTime: 100
-  CastTimes: 1
-  TravelDistance: 0
-  ActivityType: 2
-  Range: 7
-  Speed: 0
-  LiveTime: 50
+  Effecttype: 0
+  Damage: 0
+  Duration: 0
+  EffectTimes: 0
+  OverrulesControles: 0
+  EffectCooldown: 0
+--- !u!114 &114486803949359476
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1199030864639636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436faa694169049c4bcac207d508f390, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Effect: {fileID: 114468705406884186}
+  CastTime: 0
+  ExecutionTimes: 1
   CanMove: 0
+  Interraction: 0
   CollisionReaction: 0
-  DistanceTraveledReaction: 1
-  Effect: {fileID: 0}
+  LifeExpired: 1
+  SecondaryAbility: {fileID: 0}
   AbilityCaster: {fileID: 1453245980911748, guid: fc01375ab89ae0b4295ac4935b659653,
     type: 2}
+  TargetGameObject: {fileID: 0}
+  StartPosition: {x: 0, y: 0, z: 0}
+  TargetPosition: {x: 0, y: 0, z: 0}
+  Sender: {fileID: 0}
+  CastRange: 0
+  LiveDuration: 10
 --- !u!136 &136170495567494282
 CapsuleCollider:
   m_ObjectHideFlags: 1

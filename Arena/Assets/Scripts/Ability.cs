@@ -2,41 +2,47 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ability : MonoBehaviour {
+public abstract class Ability : MonoBehaviour {
 
-    public Effect.EffectType EffectType;
-    public float Modifier;
+	public Effect Effect;
 
     public int CastTime;
-    public int CastTimes = 1;
-    public float TravelDistance;
-    public AbilityType ActivityType;
-    public int Range;
-    public float Speed;
-    public int LiveTime;
+    public int ExecutionTimes = 1;
+    //public float LifeValue;
+    //public AbilityType ActivityType;
+    //public int CastRange;
+    //public float Speed;
     public bool CanMove;
+
+	public InterractsWith Interraction;
 
     //public Reaction AfterCastReaction;
     public Reaction CollisionReaction;
-    public Reaction DistanceTraveledReaction;
-    public GameObject Effect;
+	public Reaction LifeExpired = Reaction.Destroy;
+    public GameObject SecondaryAbility;
     public GameObject AbilityCaster;
 
-    GameObject TargetGameObject;
-    Vector3 StartPosition;
-    Vector3 TargetPosition;
-    GameObject Sender;
+	[HideInInspector]
+    public GameObject TargetGameObject;
+	[HideInInspector]
+    public Vector3 StartPosition;
+	[HideInInspector]
+    public Vector3 TargetPosition;
+	[HideInInspector]
+    public GameObject Sender;
     int LivedTime;
 
-    public enum Reaction
-    {
-        None, Destroy, Effect, Recast
-    }
-
+    public enum Reaction { None, Destroy, SecondaryAbility, Recast, EffectOnSender }
     public enum AbilityType { TargetAbility, SkillShotAbility, Aoe}
+	public enum InterractsWith { Enemy, Friendly, Self, FriendlyAndSelf }
+		
+	public abstract void UseAbility (GameObject sender);
 
+	public abstract void Prepare (GameObject target, Vector3 start, GameObject sender);
 
-    public void UseAbility(GameObject sender)
+	public abstract void Prepare (Vector3 clickPosition, Vector3 start, GameObject sender);
+	/*
+    public abstract void UseAbility(GameObject sender)
     {
         RaycastHit hit;
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -51,21 +57,20 @@ public class Ability : MonoBehaviour {
         if (ActivityType == AbilityType.TargetAbility && hit.collider.tag == "Ground")
 			return;
 
-
         GameObject caster = Instantiate(AbilityCaster, sender.transform) as GameObject;
         var abilityCaster = caster.GetComponent<AbilityCaster>();
         abilityCaster.StartCasting(gameObject, hit, sender);
-        abilityCaster.NewActivity(ActivityType, CastTime, CastTimes, Range, CanMove);
+		abilityCaster.NewActivity(ActivityType, CastTime, ExecutionTimes, CastRange, CanMove);
     }
 
-    public void Prepare(GameObject target, Vector3 start, GameObject sender)
+    public abstract void Prepare(GameObject target, Vector3 start, GameObject sender)
     {
         Sender = sender;
         TargetGameObject = target;
         StartPosition = start;
     }
 
-    public void Prepare(Vector3 clickPosition, Vector3 start, GameObject sender)
+	public abstract void Prepare(Vector3 clickPosition, Vector3 start, GameObject sender)
     {
         Sender = sender;
         var x = clickPosition.x - start.x;
@@ -73,7 +78,7 @@ public class Ability : MonoBehaviour {
         StartPosition = start;
         if (ActivityType == AbilityType.Aoe) TargetPosition = new Vector3(clickPosition.x, transform.position.y, clickPosition.z);
         else TargetPosition = new Vector3(start.x + (x * 1000), transform.position.y, start.z + (z * 1000));
-    }
+    } 
 
     // Use this for initialization
     void Start () {
@@ -83,56 +88,67 @@ public class Ability : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(ActivityType == AbilityType.Aoe)
-        {
+        if(ActivityType == AbilityType.Aoe) {
             LivedTime++;
-            if(LivedTime >= LiveTime) AbilityReaction(DistanceTraveledReaction);
-        } else
+			if(LivedTime >= LifeValue) AbilityReaction(LifeExpired);
+        } 
+		else
         {
             Vector3 position = new Vector3();
             if (TargetGameObject != null) position = TargetGameObject.transform.position;
-            else if (TargetPosition != null) position = TargetPosition;
+			else position = TargetPosition;
 
             float step = Speed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, position, step);
 
-            if (ActivityType == AbilityType.SkillShotAbility && Vector3.Distance(transform.position, StartPosition) > TravelDistance)
-            {
-                AbilityReaction(DistanceTraveledReaction);
-            }
+			if (ActivityType == AbilityType.SkillShotAbility && Vector3.Distance(transform.position, StartPosition) > LifeValue)
+				AbilityReaction(LifeExpired);
         }
-    }
+    }*/
 
     private void OnTriggerEnter(Collider other)
     {
-        print(other.tag);
-        print(Sender.tag);
-		if (other.tag != Sender.tag && other.tag != "Caster" && other.tag != "Ability")
-        {
-            //print(other.tag);
-            //print(TargetGameObject.tag);
-            if (ActivityType == AbilityType.TargetAbility && other.tag == TargetGameObject.tag || ActivityType == AbilityType.SkillShotAbility)
-            {
-                other.gameObject.SendMessage("Hit", new Effect());
-            }
-            AbilityReaction(CollisionReaction);
-        }
-        
+		print (other.tag);
+
+		if (other.tag == "Caster" || other.tag == "Ability" || other.tag == "Default" || other.tag == "Ground" || other.tag == "Untagged")
+			return;
+
+		print (other.tag + " - Still??");
+
+		switch (Interraction) 
+		{
+			case InterractsWith.Enemy:
+				if (other.GetComponent<BodyController> ().TeamID == Sender.GetComponent<BodyController> ().TeamID)
+					return;
+				other.gameObject.SendMessage ("Hit", new Effect(Effect, transform.position));
+				break;
+			case InterractsWith.Friendly:
+				if (other.GetComponent<BodyController> ().TeamID != Sender.GetComponent<BodyController> ().TeamID)
+					return;
+				other.gameObject.SendMessage ("Hit", new Effect(Effect, transform.position));
+				break;
+		}
+		AbilityReaction(CollisionReaction);
     }
 
-    void AbilityReaction(Reaction reaction)
+    public void AbilityReaction(Reaction reaction)
     {
         switch (reaction)
         {
             case Reaction.Destroy:
                 Destroy(gameObject);
                 break;
-            case Reaction.Effect:
-                GameObject newObject = Instantiate(Effect) as GameObject;
+		case Reaction.SecondaryAbility:
+				print ("casting secondary ability");
+				GameObject newObject = Instantiate(SecondaryAbility) as GameObject;
                 var proj = newObject.GetComponent<Ability>();
                 proj.Prepare(transform.position, transform.position, Sender);
                 Destroy(gameObject);
                 break;
+			case Reaction.EffectOnSender:
+				Sender.SendMessage ("Hit", new Effect(Effect, transform.position));
+				Destroy(gameObject);
+				break;
         }
     }
 }
