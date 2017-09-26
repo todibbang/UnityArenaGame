@@ -21,11 +21,13 @@ public class AbilityCaster : MonoBehaviour {
     float AbilityCastTime;
     int AbilityCastTimes;
     bool CanMove;
-
+    bool ignoreCaster;
 	bool MovementOverruled;
+    bool InActive = true;
 
 	public void StartCasting(GameObject ability, GameObject sender, Vector3 targetPosition, GameObject targetGameObject)
     {
+        InActive = false;
         AbilityObject = ability;
         Sender = sender;
 		SenderController = Sender.GetComponent<BodyController> ();
@@ -52,6 +54,7 @@ public class AbilityCaster : MonoBehaviour {
 
     void Start()
     {
+        if (InActive) return;
         transform.position = Sender.transform.position;
 		this.name = AbilityObject.name;
         SenderController.AddCaster(gameObject, AbilityObject);
@@ -59,56 +62,53 @@ public class AbilityCaster : MonoBehaviour {
 
     void Update()
     {
-		Sender.SendMessage ("AttemptToContinue", gameObject);
+        if (InActive) return;
+        Sender.SendMessage ("AttemptToContinue", gameObject);
 
         var position = new Vector3();
         if (currentActivityType == Ability.AbilityType.TargetAbility) position = TargetGameObject.transform.position;
         else position = TargetDirection;
 
-        //if (SenderController.FirstInqueue (gameObject)) {
+        
+		if (!CanMove && MovementOverruled) Stop ();
 
-			//print (MovementOverruled);
-
-			if (!CanMove && MovementOverruled) Stop ();
-
-			if (TargetAbilityRange > 0)
+		if (TargetAbilityRange > 0)
+		{
+            if (Vector3.Distance(position, transform.position) > TargetAbilityRange)
 			{
-                if (Vector3.Distance(position, transform.position) > TargetAbilityRange)
-				{
-					if (MovementOverruled) 
-						Stop ();
-					else if(!MovementOverruled)
-						Sender.SendMessage ("Move", position);
-					return;
-				}
-			}
-
-			CastTime++;
-			if (CastTime >= AbilityCastTime)
-			{
-				CastTime = 0;
-				switch (currentActivityType)
-				{
-				    case Ability.AbilityType.TargetAbility:
-					    CastTargetAbility(AbilityObject, TargetGameObject);
-					    break;
-				    case Ability.AbilityType.SkillShotAbility:
-					    CastSkillShot(AbilityObject, TargetDirection);
-					    break;
-                    case Ability.AbilityType.Aoe:
-                        CastSkillShot(AbilityObject, TargetDirection);
-                        break;
-				}
-				CastTimes++;
-				if (AbilityCastTimes > 0 && CastTimes >= AbilityCastTimes)
+				if (MovementOverruled) 
 					Stop ();
+				else if(!MovementOverruled)
+					Sender.SendMessage ("Move", position);
+				return;
 			}
+		}
 
-			if(TargetAbilityRange > 0)
+		CastTime++;
+		if (CastTime >= AbilityCastTime)
+		{
+			CastTime = 0;
+			switch (currentActivityType)
 			{
-				if (Vector3.Distance(position, transform.position) > TargetAbilityRange) Stop();
+				case Ability.AbilityType.TargetAbility:
+					CastTargetAbility(AbilityObject, TargetGameObject);
+					break;
+				case Ability.AbilityType.SkillShotAbility:
+					CastSkillShot(AbilityObject, TargetDirection);
+					break;
+                case Ability.AbilityType.Aoe:
+                    CastSkillShot(AbilityObject, TargetDirection);
+                    break;
 			}
-		//}
+			CastTimes++;
+			if (AbilityCastTimes > 0 && CastTimes >= AbilityCastTimes)
+				Stop ();
+		}
+
+		if(TargetAbilityRange > 0)
+		{
+			if (Vector3.Distance(position, transform.position) > TargetAbilityRange) Stop();
+		}
     }
 
     void CastSkillShot(GameObject ability, Vector3 targetDirection)
@@ -116,6 +116,7 @@ public class AbilityCaster : MonoBehaviour {
         GameObject newObject = Instantiate(ability) as GameObject;
         var proj = newObject.GetComponent<Ability>();
         proj.Prepare(targetDirection, transform.position, Sender);
+        if (ignoreCaster) proj.IgnoreCaster();
     }
 
     void CastTargetAbility(GameObject ability, GameObject target)
@@ -123,6 +124,7 @@ public class AbilityCaster : MonoBehaviour {
         GameObject newObject = Instantiate(ability) as GameObject;
         var proj = newObject.GetComponent<Ability>();
         proj.Prepare(target, transform.position, Sender);
+        if (ignoreCaster) proj.IgnoreCaster();
     }
 
 	public void OverruleMovement(){
@@ -132,4 +134,9 @@ public class AbilityCaster : MonoBehaviour {
 	public void Stop() {
 		Sender.SendMessage ("RemoveCaster", gameObject);
 	}
+
+    public void IgnoreCaster()
+    {
+        ignoreCaster = true;
+    }
 }

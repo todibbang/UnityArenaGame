@@ -4,7 +4,8 @@ using UnityEngine;
 using System.Linq;
 
 public class BodyController : MonoBehaviour {
-	
+
+    public int ID;
 	public int TeamID;
     public Stats Stats;
     public GameObject AutoAttack;
@@ -32,7 +33,7 @@ public class BodyController : MonoBehaviour {
 
     void Update()
     {
-        if (gameObject.tag == "Player")
+        if (ID == 1)
         {
 
 			var ControlLost = false;
@@ -187,6 +188,7 @@ public class BodyController : MonoBehaviour {
 
     void Hit(Effect effect)
     {
+        print("Body hit with " + effect.Effecttype);
 		Effects.Add (effect);
     }
 

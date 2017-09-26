@@ -20,7 +20,7 @@ public abstract class Ability : MonoBehaviour {
     public Reaction CollisionReaction;
 	public Reaction LifeExpired = Reaction.Destroy;
     public GameObject SecondaryAbility;
-    public GameObject AbilityCaster;
+    //public GameObject AbilityCaster;
 
 	[HideInInspector]
     public GameObject TargetGameObject;
@@ -30,11 +30,13 @@ public abstract class Ability : MonoBehaviour {
     public Vector3 TargetPosition;
 	[HideInInspector]
     public GameObject Sender;
-    int LivedTime;
+    //int LivedTime;
+
+    bool ignoreCaster;
 
     public enum Reaction { None, Destroy, SecondaryAbility, Recast, EffectOnSender }
     public enum AbilityType { TargetAbility, SkillShotAbility, Aoe}
-	public enum InterractsWith { Enemy, Friendly, Self, FriendlyAndSelf }
+	public enum InterractsWith { Enemy, Friendly, Self, FriendlyAndSelf, Terrain, Noone }
 		
 	public abstract void UseAbility (GameObject sender);
 
@@ -113,9 +115,31 @@ public abstract class Ability : MonoBehaviour {
 		if (other.tag == "Caster" || other.tag == "Ability" || other.tag == "Default" || other.tag == "Ground" || other.tag == "Untagged")
 			return;
 
-		print (other.tag + " - Still??");
+		print (other.tag + " - Still?? " + ignoreCaster);
 
-		switch (Interraction) 
+
+
+        int hitID = other.gameObject.GetComponent<BodyController>().ID, hitTeam = other.gameObject.GetComponent<BodyController>().TeamID;
+        int senderID = Sender.gameObject.GetComponent<BodyController>().ID, senderTeam = Sender.gameObject.GetComponent<BodyController>().TeamID;
+
+        switch (Interraction)
+        {
+            case InterractsWith.Enemy:
+                if (hitTeam == senderTeam) return;
+                break;
+            case InterractsWith.Friendly:
+                if (hitTeam != senderTeam || hitID == senderID) return;
+                break;
+            case InterractsWith.FriendlyAndSelf:
+                if (hitTeam != senderTeam || hitID == senderID && ignoreCaster) return;
+                break;
+            case InterractsWith.Self:
+                if (hitID != senderID) return;
+                break;
+        }
+        other.gameObject.SendMessage("Hit", new Effect(Effect, transform.position));
+        /*
+        switch (Interraction) 
 		{
 			case InterractsWith.Enemy:
 				if (other.GetComponent<BodyController> ().TeamID == Sender.GetComponent<BodyController> ().TeamID)
@@ -123,12 +147,28 @@ public abstract class Ability : MonoBehaviour {
 				other.gameObject.SendMessage ("Hit", new Effect(Effect, transform.position));
 				break;
 			case InterractsWith.Friendly:
-				if (other.GetComponent<BodyController> ().TeamID != Sender.GetComponent<BodyController> ().TeamID)
+				if (other.GetComponent<BodyController> ().TeamID != Sender.GetComponent<BodyController> ().TeamID ||
+                    other.GetComponent<BodyController>().ID == Sender.GetComponent<BodyController>().ID)
 					return;
 				other.gameObject.SendMessage ("Hit", new Effect(Effect, transform.position));
 				break;
-		}
+            case InterractsWith.FriendlyAndSelf:
+                if (other.GetComponent<BodyController>().TeamID != Sender.GetComponent<BodyController>().TeamID)
+                    return;
+                other.gameObject.SendMessage("Hit", new Effect(Effect, transform.position));
+                break;
+            case InterractsWith.Self:
+                if (other.GetComponent<BodyController>().ID != Sender.GetComponent<BodyController>().ID)
+                    return;
+                other.gameObject.SendMessage("Hit", new Effect(Effect, transform.position));
+                break;
+        } */
 		AbilityReaction(CollisionReaction);
+    }
+
+    public void IgnoreCaster()
+    {
+        ignoreCaster = true;
     }
 
     public void AbilityReaction(Reaction reaction)
@@ -138,7 +178,7 @@ public abstract class Ability : MonoBehaviour {
             case Reaction.Destroy:
                 Destroy(gameObject);
                 break;
-		case Reaction.SecondaryAbility:
+		    case Reaction.SecondaryAbility:
 				print ("casting secondary ability");
 				GameObject newObject = Instantiate(SecondaryAbility) as GameObject;
                 var proj = newObject.GetComponent<Ability>();

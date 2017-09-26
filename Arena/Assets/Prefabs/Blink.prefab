@@ -75,7 +75,6 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33774765386816658
 MeshFilter:
@@ -127,11 +126,9 @@ MonoBehaviour:
   ExecutionTimes: 1
   CanMove: 0
   Interraction: 0
-  CollisionReaction: 4
+  CollisionReaction: 0
   LifeExpired: 4
   SecondaryAbility: {fileID: 0}
-  AbilityCaster: {fileID: 1453245980911748, guid: fc01375ab89ae0b4295ac4935b659653,
-    type: 2}
   TargetGameObject: {fileID: 0}
   StartPosition: {x: 0, y: 0, z: 0}
   TargetPosition: {x: 0, y: 0, z: 0}
@@ -149,7 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bdbef354fa50364798d1a31ced8cd09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Effecttype: 6
+  Effecttype: 7
   Damage: 0
   Duration: 10000
   EffectTimes: 0

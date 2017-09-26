@@ -17,7 +17,7 @@ public class Effect : MonoBehaviour {
 
     public enum EffectType
     {
-        MagicDamage, PhysicalDamage, Stun, Slow, Root, MoveTo, BlinkTo
+        MagicDamage, PhysicalDamage, Heal, Stun, Slow, Root, MoveTo, BlinkTo
     }
 
 	public Effect(Effect effect, Vector3 position) {

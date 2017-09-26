@@ -14,12 +14,36 @@ public class TargetAbility : Ability {
 		if (Physics.Raycast(ray, out hit, 10000, (1 << LayerMask.NameToLayer("Body"))))
 		{
 			if (hit.collider == null) return;
-			GameObject caster = Instantiate(AbilityCaster, sender.transform) as GameObject;
-			var abilityCaster = caster.GetComponent<AbilityCaster>();
+
+            int hitID = hit.collider.gameObject.GetComponent<BodyController>().ID, hitTeam = hit.collider.gameObject.GetComponent<BodyController>().TeamID;
+            int senderID = sender.gameObject.GetComponent<BodyController>().ID, senderTeam = sender.gameObject.GetComponent<BodyController>().TeamID;
+
+            var IgnoreCaster = false;
+            switch (Interraction)
+            {
+                case InterractsWith.Enemy:
+                    if (hitTeam == senderTeam) return;
+                    break;
+                case InterractsWith.Friendly:
+                    if (hitTeam != senderTeam || hitID == senderID) return;
+                    break;
+                case InterractsWith.Self:
+                    if (hitID != senderID) return;
+                    break;
+                case InterractsWith.FriendlyAndSelf:
+                    if (hitTeam != senderTeam) return;
+                    if (hitID != senderID) IgnoreCaster = true;
+                    break;
+            }
+
+            GameObject caster = Instantiate(GameObject.Find("Caster"), sender.transform) as GameObject;
+            var abilityCaster = caster.GetComponent<AbilityCaster>();
 			abilityCaster.StartCasting(gameObject, sender, new Vector3(), hit.collider.gameObject);
 			abilityCaster.NewActivity(AbilityType.TargetAbility, CastTime, ExecutionTimes, CastRange, CanMove);
+            if (IgnoreCaster) abilityCaster.IgnoreCaster();
 		}
 	}
+
 	public override void Prepare(Vector3 clickPosition, Vector3 start, GameObject sender) { }
 
 	public override void Prepare(GameObject target, Vector3 start, GameObject sender)

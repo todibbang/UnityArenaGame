@@ -14,8 +14,8 @@ public class SkillShotAbility : Ability {
 		if (Physics.Raycast(ray, out hit, 10000, (1 << LayerMask.NameToLayer("Ground"))))
 		{
 			if (hit.collider == null) return;
-			GameObject caster = Instantiate(AbilityCaster, sender.transform) as GameObject;
-			var abilityCaster = caster.GetComponent<AbilityCaster>();
+            GameObject caster = Instantiate(GameObject.Find("Caster"), sender.transform) as GameObject;
+            var abilityCaster = caster.GetComponent<AbilityCaster>();
 			abilityCaster.StartCasting(gameObject, sender, new Vector3(hit.point.x, transform.position.y, hit.point.z), null);
 			abilityCaster.NewActivity(AbilityType.SkillShotAbility, CastTime, ExecutionTimes, 0, CanMove);
 		}
@@ -26,12 +26,10 @@ public class SkillShotAbility : Ability {
 	public override void Prepare(Vector3 clickPosition, Vector3 start, GameObject sender)
 	{
 		Sender = sender;
-		//var x = clickPosition.x - start.x;
-		//var z = clickPosition.z - start.z;
 		StartPosition = start;
-		//print (x + ", " + z);
-		TargetPosition = new Vector3(clickPosition.x*10000 + start.x, transform.position.y, clickPosition.z*10000 + start.z);
-	}
+		//TargetPosition = new Vector3(clickPosition.x + start.x, transform.position.y, clickPosition.z + start.z);
+        TargetPosition = new Vector3(clickPosition.x * 10000 + start.x, transform.position.y, clickPosition.z * 10000 + start.z);
+    }
 
 	void Start () {
 		transform.position = StartPosition;
