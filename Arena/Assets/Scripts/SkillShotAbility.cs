@@ -16,7 +16,7 @@ public class SkillShotAbility : Ability {
 			if (hit.collider == null) return;
 			GameObject caster = Instantiate(AbilityCaster, sender.transform) as GameObject;
 			var abilityCaster = caster.GetComponent<AbilityCaster>();
-			abilityCaster.StartCasting(gameObject, hit, sender);
+			abilityCaster.StartCasting(gameObject, sender, new Vector3(hit.point.x, transform.position.y, hit.point.z), null);
 			abilityCaster.NewActivity(AbilityType.SkillShotAbility, CastTime, ExecutionTimes, 0, CanMove);
 		}
 	}
@@ -26,10 +26,11 @@ public class SkillShotAbility : Ability {
 	public override void Prepare(Vector3 clickPosition, Vector3 start, GameObject sender)
 	{
 		Sender = sender;
-		var x = clickPosition.x - start.x;
-		var z = clickPosition.z - start.z;
+		//var x = clickPosition.x - start.x;
+		//var z = clickPosition.z - start.z;
 		StartPosition = start;
-		TargetPosition = new Vector3(start.x + (x * 1000), transform.position.y, start.z + (z * 1000));
+		//print (x + ", " + z);
+		TargetPosition = new Vector3(clickPosition.x*10000 + start.x, transform.position.y, clickPosition.z*10000 + start.z);
 	}
 
 	void Start () {

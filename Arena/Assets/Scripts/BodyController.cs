@@ -20,7 +20,7 @@ public class BodyController : MonoBehaviour {
 	public GameObject TenthAbility;
 
 	public List<GameObject> ActiveCasters;
-    public List<string> ActiveCasterNames;
+    //public List<string> ActiveCasterNames;
 	public int JumpSpeed;
 	Ray ray;
 	RaycastHit hit;
@@ -179,38 +179,30 @@ public class BodyController : MonoBehaviour {
 		if (Moving) {
 			abilityCaster.OverruleMovement();
 		}
-
-		//print (ActiveCasters.Count + " index: " + ActiveCasters.IndexOf (caster));
+		/*
 		if (ActiveCasters.Count > 1 && ActiveCasters.IndexOf(caster) != ActiveCasters.Count-1) {
 			caster.SendMessage("Stop");
-		}
+		}*/
 	}
 
     void Hit(Effect effect)
     {
-		print(gameObject.tag + " is hit!!!");
 		Effects.Add (effect);
-		//effect.SetPosition (effect.transform.position);
     }
 
 	public void AddCaster(GameObject caster, GameObject ability) {
 		Moving = false;
-        if (ActiveCasterNames.Any(c => c == ability.name)) Destroy(caster);
-        else
-        {
-            ActiveCasters.Add(caster);
-            ActiveCasterNames.Add(ability.name);
-        }
+		if (ActiveCasters.Count > 0)
+			RemoveCaster (ActiveCasters [0]);
+		ActiveCasters.Add(caster);
     }
 
 	void RemoveCaster(GameObject caster) {
-        //print("index of: " + ActiveCasters.IndexOf(caster));
-        ActiveCasterNames.RemoveAt(ActiveCasters.IndexOf(caster));
         ActiveCasters.Remove (caster);
 		Destroy(caster);
 	}
-
+	/*
 	public bool FirstInqueue(GameObject caster) {
 		return ActiveCasters.IndexOf (caster) == 0;
-	}
+	} */
 }

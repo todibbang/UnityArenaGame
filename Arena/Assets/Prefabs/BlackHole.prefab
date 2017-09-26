@@ -143,7 +143,7 @@ MonoBehaviour:
   TargetPosition: {x: 0, y: 0, z: 0}
   Sender: {fileID: 0}
   CastRange: 0
-  LiveDuration: 0
+  LiveDuration: 10
 --- !u!136 &136437708012023288
 CapsuleCollider:
   m_ObjectHideFlags: 1

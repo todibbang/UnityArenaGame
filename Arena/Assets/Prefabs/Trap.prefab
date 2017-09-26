@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Effect: {fileID: 114825009094242094}
-  CastTime: 40
+  CastTime: 1
   ExecutionTimes: 1
   CanMove: 0
   Interraction: 1

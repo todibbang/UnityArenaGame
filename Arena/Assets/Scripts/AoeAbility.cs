@@ -17,7 +17,11 @@ public class AoeAbility : Ability {
 			if (hit.collider == null) return;
 			GameObject caster = Instantiate(AbilityCaster, sender.transform) as GameObject;
 			var abilityCaster = caster.GetComponent<AbilityCaster>();
-			abilityCaster.StartCasting(gameObject, hit, sender);
+
+			var position = new Vector3 (hit.point.x, transform.position.y, hit.point.z);
+			if (CastRange == 0)
+				position = sender.transform.position;
+			abilityCaster.StartCasting(gameObject, sender, position, null);
 			abilityCaster.NewActivity(AbilityType.Aoe, CastTime, ExecutionTimes, CastRange, CanMove);
 		}
 	}

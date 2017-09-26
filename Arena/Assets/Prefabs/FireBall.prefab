@@ -123,20 +123,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Effect: {fileID: 114973607438944518}
-  CastTime: 0
-  ExecutionTimes: 1
-  CanMove: 0
+  CastTime: 10
+  ExecutionTimes: 10
+  CanMove: 1
   Interraction: 0
   CollisionReaction: 0
   LifeExpired: 1
   SecondaryAbility: {fileID: 0}
-  AbilityCaster: {fileID: 0}
+  AbilityCaster: {fileID: 1453245980911748, guid: fc01375ab89ae0b4295ac4935b659653,
+    type: 2}
   TargetGameObject: {fileID: 0}
   StartPosition: {x: 0, y: 0, z: 0}
   TargetPosition: {x: 0, y: 0, z: 0}
   Sender: {fileID: 0}
-  ProjectileSpeed: 0
-  TravelLength: 0
+  ProjectileSpeed: 10
+  TravelLength: 100
 --- !u!114 &114973607438944518
 MonoBehaviour:
   m_ObjectHideFlags: 1

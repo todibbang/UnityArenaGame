@@ -5,7 +5,7 @@ using UnityEngine;
 public class AbilityCaster : MonoBehaviour {
 
     GameObject AbilityObject;
-    RaycastHit Hit;
+    //RaycastHit Hit;
     GameObject Sender;
 	BodyController SenderController;
     Vector3 StartPosition;
@@ -14,7 +14,7 @@ public class AbilityCaster : MonoBehaviour {
     int CastTimes;
     Ability.AbilityType currentActivityType;
     GameObject TargetGameObject;
-    Vector3 TargetPosition;
+	Vector3 TargetDirection;
 
     float TargetAbilityRange;
 
@@ -24,13 +24,15 @@ public class AbilityCaster : MonoBehaviour {
 
 	bool MovementOverruled;
 
-    public void StartCasting(GameObject ability, RaycastHit hit, GameObject sender)
+	public void StartCasting(GameObject ability, GameObject sender, Vector3 targetPosition, GameObject targetGameObject)
     {
         AbilityObject = ability;
-        Hit = hit;
         Sender = sender;
 		SenderController = Sender.GetComponent<BodyController> ();
         StartPosition = Sender.transform.position;
+
+		TargetGameObject = targetGameObject;
+		TargetDirection = targetPosition;
     }
 
     public void NewActivity(Ability.AbilityType activityType, float castTime, int castTimes, float range, bool move)
@@ -40,13 +42,18 @@ public class AbilityCaster : MonoBehaviour {
         AbilityCastTimes = castTimes;
         TargetAbilityRange = range;
         CanMove = move;
-        TargetGameObject = Hit.collider.gameObject;
-        TargetPosition = new Vector3(Hit.point.x, transform.position.y, Hit.point.z);
+
+		if (activityType == Ability.AbilityType.SkillShotAbility) {
+			var x = TargetDirection.x - Sender.transform.position.x;
+			var z = TargetDirection.z - Sender.transform.position.z;
+			TargetDirection = new Vector3(x, transform.position.y, z);
+		}
     }
 
     void Start()
     {
         transform.position = Sender.transform.position;
+		this.name = AbilityObject.name;
         SenderController.AddCaster(gameObject, AbilityObject);
     }
 
@@ -56,9 +63,9 @@ public class AbilityCaster : MonoBehaviour {
 
         var position = new Vector3();
         if (currentActivityType == Ability.AbilityType.TargetAbility) position = TargetGameObject.transform.position;
-        else position = TargetPosition;
+        else position = TargetDirection;
 
-        if (SenderController.FirstInqueue (gameObject)) {
+        //if (SenderController.FirstInqueue (gameObject)) {
 
 			//print (MovementOverruled);
 
@@ -68,12 +75,11 @@ public class AbilityCaster : MonoBehaviour {
 			{
                 if (Vector3.Distance(position, transform.position) > TargetAbilityRange)
 				{
-					if (MovementOverruled)
+					if (MovementOverruled) 
 						Stop ();
-					else if(!MovementOverruled){
+					else if(!MovementOverruled)
 						Sender.SendMessage ("Move", position);
-						return;
-					}
+					return;
 				}
 			}
 
@@ -87,10 +93,10 @@ public class AbilityCaster : MonoBehaviour {
 					    CastTargetAbility(AbilityObject, TargetGameObject);
 					    break;
 				    case Ability.AbilityType.SkillShotAbility:
-					    CastSkillShot(AbilityObject, TargetPosition);
+					    CastSkillShot(AbilityObject, TargetDirection);
 					    break;
                     case Ability.AbilityType.Aoe:
-                        CastSkillShot(AbilityObject, TargetPosition);
+                        CastSkillShot(AbilityObject, TargetDirection);
                         break;
 				}
 				CastTimes++;
@@ -102,7 +108,7 @@ public class AbilityCaster : MonoBehaviour {
 			{
 				if (Vector3.Distance(position, transform.position) > TargetAbilityRange) Stop();
 			}
-		}
+		//}
     }
 
     void CastSkillShot(GameObject ability, Vector3 targetDirection)

@@ -144,7 +144,7 @@ MonoBehaviour:
   ExecutionTimes: 5
   CanMove: 1
   Interraction: 0
-  CollisionReaction: 0
+  CollisionReaction: 1
   LifeExpired: 1
   SecondaryAbility: {fileID: 0}
   AbilityCaster: {fileID: 1453245980911748, guid: fc01375ab89ae0b4295ac4935b659653,

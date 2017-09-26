@@ -16,7 +16,7 @@ public class TargetAbility : Ability {
 			if (hit.collider == null) return;
 			GameObject caster = Instantiate(AbilityCaster, sender.transform) as GameObject;
 			var abilityCaster = caster.GetComponent<AbilityCaster>();
-			abilityCaster.StartCasting(gameObject, hit, sender);
+			abilityCaster.StartCasting(gameObject, sender, new Vector3(), hit.collider.gameObject);
 			abilityCaster.NewActivity(AbilityType.TargetAbility, CastTime, ExecutionTimes, CastRange, CanMove);
 		}
 	}
