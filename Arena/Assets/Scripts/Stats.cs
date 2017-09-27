@@ -9,8 +9,12 @@ public class Stats : MonoBehaviour
     public int Range;
     public float Speed;
 
+    int CurrentHealth;
 
-
+    void Start()
+    {
+        CurrentHealth = Health;
+    }
 
     public bool InRange(GameObject target)
     {
@@ -32,5 +36,8 @@ public class Stats : MonoBehaviour
         return 50;
     }
 
-	
+    public int[] GetHealth()
+    {
+        return new[] { Health, CurrentHealth };
+    }
 }

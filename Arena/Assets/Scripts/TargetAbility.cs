@@ -7,6 +7,7 @@ public class TargetAbility : Ability {
 	public int CastRange;
 	public int ProjectileSpeed;
 
+    /*
 	public override void UseAbility(GameObject sender)
 	{
 		RaycastHit hit;
@@ -36,13 +37,13 @@ public class TargetAbility : Ability {
                     break;
             }
 
-            GameObject caster = Instantiate(GameObject.Find("Caster"), sender.transform) as GameObject;
-            var abilityCaster = caster.GetComponent<AbilityCaster>();
-			abilityCaster.StartCasting(gameObject, sender, new Vector3(), hit.collider.gameObject);
+            //GameObject caster = Instantiate(GameObject.Find("Caster"), sender.transform) as GameObject;
+            var abilityCaster = sender.GetComponent<AbilityCaster>();
+            abilityCaster.StartCasting(gameObject, sender, new Vector3(), hit.collider.gameObject);
 			abilityCaster.NewActivity(AbilityType.TargetAbility, CastTime, ExecutionTimes, CastRange, CanMove);
             if (IgnoreCaster) abilityCaster.IgnoreCaster();
 		}
-	}
+	} */
 
 	public override void Prepare(Vector3 clickPosition, Vector3 start, GameObject sender) { }
 

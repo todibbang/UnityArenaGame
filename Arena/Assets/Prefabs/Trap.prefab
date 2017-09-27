@@ -25,6 +25,8 @@ GameObject:
   - component: {fileID: 54776388019363750}
   - component: {fileID: 114562823213771650}
   - component: {fileID: 114825009094242094}
+  - component: {fileID: 114132804781478406}
+  - component: {fileID: 114286877450968158}
   m_Layer: 10
   m_Name: Trap
   m_TagString: Ability
@@ -98,6 +100,58 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &114132804781478406
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1808128945360492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 80
+    i1: 196
+    i2: 121
+    i3: 168
+    i4: 138
+    i5: 37
+    i6: 132
+    i7: 248
+    i8: 41
+    i9: 129
+    i10: 196
+    i11: 232
+    i12: 206
+    i13: 40
+    i14: 191
+    i15: 95
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
+--- !u!114 &114286877450968158
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1808128945360492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 3
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &114562823213771650
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -113,12 +167,10 @@ MonoBehaviour:
   CastTime: 1
   ExecutionTimes: 1
   CanMove: 0
-  Interraction: 1
+  Interraction: 5
   CollisionReaction: 2
   LifeExpired: 1
   SecondaryAbility: {fileID: 1199030864639636, guid: 80ffb21afc2086844829ee8da7727b59,
-    type: 2}
-  AbilityCaster: {fileID: 1453245980911748, guid: fc01375ab89ae0b4295ac4935b659653,
     type: 2}
   TargetGameObject: {fileID: 0}
   StartPosition: {x: 0, y: 0, z: 0}

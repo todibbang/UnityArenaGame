@@ -25,6 +25,8 @@ GameObject:
   - component: {fileID: 54438475936695678}
   - component: {fileID: 114252121087911226}
   - component: {fileID: 114973607438944518}
+  - component: {fileID: 114811610343676552}
+  - component: {fileID: 114089039645587142}
   m_Layer: 10
   m_Name: FireBall
   m_TagString: Ability
@@ -75,7 +77,6 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33612637267386622
 MeshFilter:
@@ -111,6 +112,26 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114089039645587142
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1518482883245924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 3
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &114252121087911226
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -124,20 +145,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Effect: {fileID: 114973607438944518}
   CastTime: 10
-  ExecutionTimes: 10
+  ExecutionTimes: 1
   CanMove: 1
-  Interraction: 0
+  Interraction: 2
   CollisionReaction: 0
   LifeExpired: 1
   SecondaryAbility: {fileID: 0}
-  AbilityCaster: {fileID: 1453245980911748, guid: fc01375ab89ae0b4295ac4935b659653,
-    type: 2}
   TargetGameObject: {fileID: 0}
   StartPosition: {x: 0, y: 0, z: 0}
   TargetPosition: {x: 0, y: 0, z: 0}
   Sender: {fileID: 0}
   ProjectileSpeed: 10
-  TravelLength: 100
+  TravelLength: 20
+--- !u!114 &114811610343676552
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1518482883245924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 15
+    i1: 160
+    i2: 127
+    i3: 199
+    i4: 182
+    i5: 155
+    i6: 167
+    i7: 36
+    i8: 219
+    i9: 55
+    i10: 23
+    i11: 124
+    i12: 174
+    i13: 255
+    i14: 70
+    i15: 133
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114973607438944518
 MonoBehaviour:
   m_ObjectHideFlags: 1

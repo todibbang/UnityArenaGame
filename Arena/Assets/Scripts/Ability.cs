@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Ability : MonoBehaviour {
+using UnityEngine.Networking;
+
+public abstract class Ability : NetworkBehaviour {
 
 	public Effect Effect;
 
@@ -38,7 +40,7 @@ public abstract class Ability : MonoBehaviour {
     public enum AbilityType { TargetAbility, SkillShotAbility, Aoe}
 	public enum InterractsWith { Enemy, Friendly, Self, FriendlyAndSelf, Terrain, Noone }
 		
-	public abstract void UseAbility (GameObject sender);
+	//public abstract void UseAbility (GameObject sender);
 
 	public abstract void Prepare (GameObject target, Vector3 start, GameObject sender);
 

@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class BodyController : MonoBehaviour {
+using UnityEngine.Networking;
+using System;
+
+public class BodyController : NetworkBehaviour
+{
 
     public int ID;
 	public int TeamID;
@@ -20,8 +24,9 @@ public class BodyController : MonoBehaviour {
 	public GameObject NinthAbility;
 	public GameObject TenthAbility;
 
+    public Camera Camera;
+    public AbilityCaster Caster;
 	public List<GameObject> ActiveCasters;
-    //public List<string> ActiveCasterNames;
 	public int JumpSpeed;
 	Ray ray;
 	RaycastHit hit;
@@ -31,11 +36,18 @@ public class BodyController : MonoBehaviour {
 
 	List<Effect> Effects = new List<Effect>();
 
+    public override void OnStartLocalPlayer()
+    {
+        GetComponent<MeshRenderer>().material.color = Color.blue;
+        Camera.enabled = true;
+    }
+
     void Update()
     {
+        if (!isLocalPlayer) return;
+
         if (ID == 1)
         {
-
 			var ControlLost = false;
 			List<Effect> EffectsToLose = new List<Effect>();
 			foreach (var effect in Effects) {
@@ -93,30 +105,22 @@ public class BodyController : MonoBehaviour {
 				{
 					if (hit.collider != null && hit.collider.tag == "Enemy") {
 						//print ("THIS??");
-						AutoAttack.GetComponent<Ability> ().UseAbility (gameObject);
+						UseAbility (0, AutoAttack);
 						return;
 					}
-					/*
-					else if (hit.collider != null && hit.collider.tag == "Ground")  //NewActivity(ActivityType.Move, null, 0, 0, false, null, );
-					{
-						//print ("OR DAT??");
-						//gameObject.SendMessage ("OverruleMovement");
-						Moving = true;
-						MoveToPosition = new Vector3(hit.point.x, transform.position.y, hit.point.z);
-					} */
 				}
 			}
             
-			if (Input.GetKeyDown(KeyCode.Alpha1)) FirstAbility.GetComponent<Ability>().UseAbility(gameObject);
-			if (Input.GetKeyDown(KeyCode.Alpha2)) SecondAbility.GetComponent<Ability>().UseAbility(gameObject);
-			if (Input.GetKeyDown(KeyCode.Alpha3)) ThirdAbility.GetComponent<Ability>().UseAbility(gameObject);
-			if (Input.GetKeyDown(KeyCode.Alpha4)) ForthAbility.GetComponent<Ability>().UseAbility(gameObject);
-			if (Input.GetKeyDown(KeyCode.Alpha5)) FifthAbility.GetComponent<Ability>().UseAbility(gameObject);
-			if (Input.GetKeyDown(KeyCode.Alpha6)) SixthAbility.GetComponent<Ability>().UseAbility(gameObject);
-			if (Input.GetKeyDown(KeyCode.Alpha7)) SeventhAbility.GetComponent<Ability>().UseAbility(gameObject);
-			if (Input.GetKeyDown(KeyCode.Alpha8)) EighthAbility.GetComponent<Ability>().UseAbility(gameObject);
-			if (Input.GetKeyDown(KeyCode.Alpha9)) NinthAbility.GetComponent<Ability>().UseAbility(gameObject);
-			if (Input.GetKeyDown(KeyCode.Alpha0)) TenthAbility.GetComponent<Ability>().UseAbility(gameObject);
+			if (Input.GetKeyDown(KeyCode.Alpha1)) UseAbility(1, FirstAbility);
+			if (Input.GetKeyDown(KeyCode.Alpha2)) UseAbility(2, SecondAbility);
+			if (Input.GetKeyDown(KeyCode.Alpha3)) UseAbility(3, ThirdAbility);
+			if (Input.GetKeyDown(KeyCode.Alpha4)) UseAbility(4, ForthAbility);
+			if (Input.GetKeyDown(KeyCode.Alpha5)) UseAbility(5, FifthAbility);
+			if (Input.GetKeyDown(KeyCode.Alpha6)) UseAbility(6, SixthAbility);
+			if (Input.GetKeyDown(KeyCode.Alpha7)) UseAbility(7, SeventhAbility);
+			if (Input.GetKeyDown(KeyCode.Alpha8)) UseAbility(8, EighthAbility);
+			if (Input.GetKeyDown(KeyCode.Alpha9)) UseAbility(9, NinthAbility);
+			if (Input.GetKeyDown(KeyCode.Alpha0)) UseAbility(10, TenthAbility);
 
 			if (Input.GetKey (KeyCode.W))
 				PlayerMove (transform.position + (transform.rotation * Vector3.forward));
@@ -145,9 +149,6 @@ public class BodyController : MonoBehaviour {
 				rb.AddForce(new Vector3(0,JumpSpeed,0));
 			}
         }
-
-        //if (GlobalCooldown > 0) GlobalCooldown--;
-
 
         if (Moving)
         {
@@ -180,10 +181,6 @@ public class BodyController : MonoBehaviour {
 		if (Moving) {
 			abilityCaster.OverruleMovement();
 		}
-		/*
-		if (ActiveCasters.Count > 1 && ActiveCasters.IndexOf(caster) != ActiveCasters.Count-1) {
-			caster.SendMessage("Stop");
-		}*/
 	}
 
     void Hit(Effect effect)
@@ -203,8 +200,111 @@ public class BodyController : MonoBehaviour {
         ActiveCasters.Remove (caster);
 		Destroy(caster);
 	}
-	/*
-	public bool FirstInqueue(GameObject caster) {
-		return ActiveCasters.IndexOf (caster) == 0;
-	} */
+
+    [Command]
+    public void CmdCast(int abilityNumber, GameObject targetGameObject, Vector3 targetDirection, bool ignoreCaster, Ability.AbilityType abilityType)
+    {
+        GameObject newAbility = null;
+        if (abilityNumber == 1) newAbility = Instantiate(FirstAbility) as GameObject;
+        if (abilityNumber == 2) newAbility = Instantiate(SecondAbility) as GameObject;
+        if (abilityNumber == 3) newAbility = Instantiate(ThirdAbility) as GameObject;
+        if (abilityNumber == 4) newAbility = Instantiate(ForthAbility) as GameObject;
+
+
+        NetworkServer.Spawn(newAbility);
+        var abil = newAbility.GetComponent<Ability>();
+        if (targetGameObject != null) abil.Prepare(targetGameObject, transform.position, gameObject);
+        else abil.Prepare(targetDirection, transform.position, gameObject);
+        if (ignoreCaster) abil.IgnoreCaster(); 
+
+        /*
+        newAbility.transform.position = targetDirection;
+        var v2 = new Vector2(targetDirection.x, targetDirection.z);
+        var v1 = new Vector2(transform.position.x, transform.position.z);
+        Vector2 diference = v2 - v1;
+        float sign = (v2.y > v1.y) ? -1.0f : 1.0f;
+        var Angel = Vector2.Angle(Vector2.right, diference) * sign;
+        newAbility.transform.Rotate(new Vector3(0, Angel - 90, 0)); */
+        //if(abilityType == Ability.AbilityType.SkillShotAbility) gameObject.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 6;
+    }
+
+    public void UseAbility(int i, GameObject ability)
+    {
+        var t = ability.GetComponent<TargetAbility>();
+        var a = ability.GetComponent<AoeAbility>();
+        var s = ability.GetComponent<SkillShotAbility>();
+        if (t != null) UseTargetAbility(i, ability);
+        if (a != null) UseAoeAbility(i, ability);
+        if (s != null) UseSkillShotAbility(i, ability);
+    }
+
+    public void UseAoeAbility(int i, GameObject ability)
+    {
+        RaycastHit hit = GetRayhit("Ground");
+        if (hit.collider == null) return;
+        var targetAbility = ability.GetComponent<AoeAbility>();
+        Caster.StartCasting(i, ability, targetAbility.CastRange == 0 ? transform.position : new Vector3(hit.point.x, transform.position.y, hit.point.z), null);
+        Caster.NewActivity(Ability.AbilityType.Aoe, targetAbility.CastTime, targetAbility.ExecutionTimes, targetAbility.CastRange, targetAbility.CanMove);
+    }
+
+
+    public void UseTargetAbility(int i, GameObject ability)
+    {
+        RaycastHit hit;
+        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit, 10000, (1 << LayerMask.NameToLayer("Body"))))
+        {
+            if (hit.collider == null) return;
+
+            int hitID = hit.collider.gameObject.GetComponent<BodyController>().ID, hitTeam = hit.collider.gameObject.GetComponent<BodyController>().TeamID;
+            int senderID = gameObject.GetComponent<BodyController>().ID, senderTeam = gameObject.GetComponent<BodyController>().TeamID;
+
+            var targetAbility = ability.GetComponent<TargetAbility>();
+
+            var IgnoreCaster = false;
+            switch (targetAbility.Interraction)
+            {
+                case Ability.InterractsWith.Enemy:
+                    if (hitTeam == senderTeam) return;
+                    break;
+                case Ability.InterractsWith.Friendly:
+                    if (hitTeam != senderTeam || hitID == senderID) return;
+                    break;
+                case Ability.InterractsWith.Self:
+                    if (hitID != senderID) return;
+                    break;
+                case Ability.InterractsWith.FriendlyAndSelf:
+                    if (hitTeam != senderTeam) return;
+                    if (hitID != senderID) IgnoreCaster = true;
+                    break;
+            }
+
+            //GameObject caster = Instantiate(GameObject.Find("Caster"), sender.transform) as GameObject;
+            Caster.StartCasting(i, ability, new Vector3(), hit.collider.gameObject);
+            Caster.NewActivity(Ability.AbilityType.TargetAbility, targetAbility.CastTime, targetAbility.ExecutionTimes, targetAbility.CastRange, targetAbility.CanMove);
+            if (IgnoreCaster) Caster.IgnoreCaster();
+        }
+    }
+
+    public void UseSkillShotAbility(int i, GameObject ability)
+    {
+        RaycastHit hit = GetRayhit("Ground");
+        if (hit.collider == null) return;
+        print(hit.point);
+        var targetAbility = ability.GetComponent<SkillShotAbility>();
+        Caster.StartCasting(i, ability, new Vector3(hit.point.x, transform.position.y, hit.point.z), null);
+        Caster.NewActivity(Ability.AbilityType.SkillShotAbility, targetAbility.CastTime, targetAbility.ExecutionTimes, 0, targetAbility.CanMove);
+    }
+
+    RaycastHit GetRayhit(string layer)
+    {
+        RaycastHit hit;
+        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit, 10000, (1 << LayerMask.NameToLayer(layer))))
+        {
+            print("returning hit");
+            return hit;
+        }
+        return hit;
+    }
 }
