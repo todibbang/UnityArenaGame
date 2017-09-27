@@ -45,18 +45,21 @@ public class TargetAbility : Ability {
 		}
 	} */
 
-	public override void Prepare(Vector3 clickPosition, Vector3 start, GameObject sender) { }
+	public override void Prepare(Vector3 clickPosition, GameObject sender) { }
 
-	public override void Prepare(GameObject target, Vector3 start, GameObject sender)
+	public override AbilityType GetType() {
+		return AbilityType.TargetAbility;
+	}
+
+	public override void Prepare(GameObject target, GameObject sender)
 	{
 		Sender = sender;
 		TargetGameObject = target;
-		StartPosition = start;
 	}
-
+	/*
 	void Start () {
 		transform.position = StartPosition;
-	}
+	}*/
 
 	void Update () {
 		Vector3 position = new Vector3();

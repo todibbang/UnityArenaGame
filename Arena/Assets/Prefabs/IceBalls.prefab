@@ -25,6 +25,8 @@ GameObject:
   - component: {fileID: 54799067313338732}
   - component: {fileID: 114594074541356776}
   - component: {fileID: 114539783352540036}
+  - component: {fileID: 114465350422017944}
+  - component: {fileID: 114183520709996328}
   m_Layer: 10
   m_Name: IceBalls
   m_TagString: Ability
@@ -111,6 +113,59 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114183520709996328
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1964609554678804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 3
+  m_SendInterval: 0.033333335
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
+--- !u!114 &114465350422017944
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1964609554678804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 91
+    i1: 235
+    i2: 16
+    i3: 18
+    i4: 17
+    i5: 114
+    i6: 135
+    i7: 212
+    i8: 121
+    i9: 187
+    i10: 215
+    i11: 151
+    i12: 105
+    i13: 62
+    i14: 254
+    i15: 174
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114539783352540036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -147,8 +202,6 @@ MonoBehaviour:
   CollisionReaction: 1
   LifeExpired: 1
   SecondaryAbility: {fileID: 0}
-  AbilityCaster: {fileID: 1453245980911748, guid: fc01375ab89ae0b4295ac4935b659653,
-    type: 2}
   TargetGameObject: {fileID: 0}
   StartPosition: {x: 0, y: 0, z: 0}
   TargetPosition: {x: 0, y: 0, z: 0}

@@ -9,27 +9,28 @@ public class AoeAbility : Ability {
 	int LivedTime;
   
 
-	public override void Prepare(GameObject target, Vector3 start, GameObject sender) { }
+	public override void Prepare(GameObject target, GameObject sender) { }
 
-	public override void Prepare(Vector3 clickPosition, Vector3 start, GameObject sender)
+	public override AbilityType GetType() {
+		return AbilityType.Aoe;
+	}
+
+	public override void Prepare(Vector3 clickPosition, GameObject sender)
 	{
         
 		Sender = sender;
-		var x = clickPosition.x - start.x;
-		var z = clickPosition.z - start.z;
-		StartPosition = start;
 		TargetPosition = new Vector3(clickPosition.x, transform.position.y, clickPosition.z);
     }
 
 	void Start () {
-        
+        /*
 		transform.position = TargetPosition;
         var v2 = new Vector2(TargetPosition.x, TargetPosition.z);
         var v1 = new Vector2(Sender.transform.position.x, Sender.transform.position.z);
         Vector2 diference = v2 - v1;
         float sign = (v2.y > v1.y) ? -1.0f : 1.0f;
         var Angel = Vector2.Angle(Vector2.right, diference) * sign;
-        transform.Rotate(new Vector3(0, Angel - 90, 0)); 
+        transform.Rotate(new Vector3(0, Angel - 90, 0));  */
     }
 
     void Update () {

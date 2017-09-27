@@ -59,12 +59,12 @@ GameObject:
   - component: {fileID: 136637007746585796}
   - component: {fileID: 23055544366654884}
   - component: {fileID: 114136897757360716}
+  - component: {fileID: 114268113670823368}
   - component: {fileID: 114898571342841994}
   - component: {fileID: 54237639141455598}
   - component: {fileID: 114359281573089412}
   - component: {fileID: 114730055513109108}
   - component: {fileID: 114543272376912466}
-  - component: {fileID: 114268113670823368}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -179,6 +179,8 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
+  m_AllowMSAA: 1
+  m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
@@ -213,6 +215,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23103112888858452
 MeshRenderer:
@@ -244,6 +247,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33166632175654718
 MeshFilter:
@@ -318,28 +322,8 @@ MonoBehaviour:
   ID: 1
   TeamID: 1
   Stats: {fileID: 114898571342841994}
-  AutoAttack: {fileID: 1393255466513296, guid: fb81b9786b0fb0143a5df6954bd0a751, type: 2}
-  FirstAbility: {fileID: 1518482883245924, guid: 0fa07fc7b69ba724db37177caeff4685,
-    type: 2}
-  SecondAbility: {fileID: 1808128945360492, guid: 50c479a88a2584f82981c4e8ce28bf5f,
-    type: 2}
-  ThirdAbility: {fileID: 1807163428843008, guid: 25ae18d1e1d864b5489c8255f6b923c1,
-    type: 2}
-  ForthAbility: {fileID: 1802895000161826, guid: 2beb3726810b7483bbb7fcf3ef01642a,
-    type: 2}
-  FifthAbility: {fileID: 1199030864639636, guid: 80ffb21afc2086844829ee8da7727b59,
-    type: 2}
-  SixthAbility: {fileID: 1518482883245924, guid: 0fa07fc7b69ba724db37177caeff4685,
-    type: 2}
-  SeventhAbility: {fileID: 1331396959748422, guid: 5c89dcb1965359848bd36f36d041fb5b,
-    type: 2}
-  EighthAbility: {fileID: 1751195503186270, guid: 73f2e6b73349c744485477f6ba88f59f,
-    type: 2}
-  NinthAbility: {fileID: 0}
-  TenthAbility: {fileID: 0}
   Camera: {fileID: 20909554263879022}
   Caster: {fileID: 114268113670823368}
-  ActiveCasters: []
   JumpSpeed: 2000
 --- !u!114 &114193329318045362
 MonoBehaviour:
@@ -385,6 +369,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aecd67fb9467a04c83f62895bc1fa96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AutoAttack: {fileID: 1393255466513296, guid: fb81b9786b0fb0143a5df6954bd0a751, type: 2}
+  Abilities:
+  - {fileID: 1518482883245924, guid: 0fa07fc7b69ba724db37177caeff4685, type: 2}
+  - {fileID: 1808128945360492, guid: 50c479a88a2584f82981c4e8ce28bf5f, type: 2}
+  - {fileID: 1964609554678804, guid: 5beb1012117287d479bbd797693efeae, type: 2}
+  - {fileID: 1751195503186270, guid: 73f2e6b73349c744485477f6ba88f59f, type: 2}
+  - {fileID: 1199030864639636, guid: 80ffb21afc2086844829ee8da7727b59, type: 2}
 --- !u!114 &114312988390977986
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -436,6 +427,7 @@ MonoBehaviour:
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
   m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
@@ -518,7 +510,7 @@ Canvas:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1883462845944488}
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_RenderMode: 2
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
@@ -527,6 +519,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 1013666937
   m_SortingOrder: 1
   m_TargetDisplay: 0
