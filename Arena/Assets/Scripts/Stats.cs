@@ -2,19 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.UI;
+
 public class Stats : MonoBehaviour
 {
+	public Text Text;
+	public RectTransform healthBar;
 
-    public int Health;
+    public float Health;
     public int Range;
     public float Speed;
 
-    int CurrentHealth;
+	float CurrentHealth;
 
     void Start()
     {
-        CurrentHealth = Health;
+		CurrentHealth = Health;
+
     }
+
+	void Update() {
+		print(CurrentHealth+" / "+Health);
+		var w = ((float)CurrentHealth / (float)Health * 200);
+		healthBar.sizeDelta = new Vector2(w, healthBar.sizeDelta.y);
+		healthBar.anchoredPosition = new Vector2 (200 - (w / 2), 0);
+	}
 
     public bool InRange(GameObject target)
     {
@@ -35,9 +47,9 @@ public class Stats : MonoBehaviour
     {
         return 50;
     }
-
+	/*
     public int[] GetHealth()
     {
         return new[] { Health, CurrentHealth };
-    }
+    }*/
 }
