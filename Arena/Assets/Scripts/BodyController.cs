@@ -204,6 +204,9 @@ public class BodyController : NetworkBehaviour
     [Command]
     public void CmdCast(int abilityNumber, GameObject targetGameObject, Vector3 targetDirection, bool ignoreCaster, Ability.AbilityType abilityType)
     {
+        GameObject.Find("Spawner").GetComponent<Spawner>().CmdSpawn("FireBall", targetGameObject, targetDirection, gameObject);
+
+        /*
         GameObject newAbility = null;
         if (abilityNumber == 1) newAbility = Instantiate(FirstAbility) as GameObject;
         if (abilityNumber == 2) newAbility = Instantiate(SecondAbility) as GameObject;
@@ -215,7 +218,13 @@ public class BodyController : NetworkBehaviour
         var abil = newAbility.GetComponent<Ability>();
         if (targetGameObject != null) abil.Prepare(targetGameObject, transform.position, gameObject);
         else abil.Prepare(targetDirection, transform.position, gameObject);
-        if (ignoreCaster) abil.IgnoreCaster(); 
+        if (ignoreCaster) abil.IgnoreCaster(); */
+
+
+
+
+
+
 
         /*
         newAbility.transform.position = targetDirection;

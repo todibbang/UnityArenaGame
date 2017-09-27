@@ -25,6 +25,8 @@ GameObject:
   - component: {fileID: 54137588415868756}
   - component: {fileID: 114486803949359476}
   - component: {fileID: 114468705406884186}
+  - component: {fileID: 114498923094699192}
+  - component: {fileID: 114119336188576584}
   m_Layer: 10
   m_Name: Blast
   m_TagString: Ability
@@ -75,7 +77,6 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33245011629908668
 MeshFilter:
@@ -99,6 +100,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &114119336188576584
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1199030864639636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 3
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &114468705406884186
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -135,14 +156,44 @@ MonoBehaviour:
   CollisionReaction: 0
   LifeExpired: 1
   SecondaryAbility: {fileID: 0}
-  AbilityCaster: {fileID: 1453245980911748, guid: fc01375ab89ae0b4295ac4935b659653,
-    type: 2}
   TargetGameObject: {fileID: 0}
   StartPosition: {x: 0, y: 0, z: 0}
   TargetPosition: {x: 0, y: 0, z: 0}
   Sender: {fileID: 0}
   CastRange: 0
   LiveDuration: 10
+--- !u!114 &114498923094699192
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1199030864639636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 128
+    i1: 255
+    i2: 178
+    i3: 26
+    i4: 252
+    i5: 32
+    i6: 134
+    i7: 132
+    i8: 72
+    i9: 41
+    i10: 238
+    i11: 141
+    i12: 167
+    i13: 114
+    i14: 123
+    i15: 89
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!136 &136170495567494282
 CapsuleCollider:
   m_ObjectHideFlags: 1
