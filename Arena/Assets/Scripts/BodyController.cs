@@ -77,6 +77,7 @@ public class BodyController : NetworkBehaviour
         if (Moving)
 			Move(MoveToPosition);
 
+
         print(Stats.GetSpeed());
         //Stats.ResetTemporaryValues();
     }
@@ -89,8 +90,16 @@ public class BodyController : NetworkBehaviour
 
     void Move(Vector3 position)
     {
+        
+
         float step = Stats.GetSpeed() * Time.deltaTime;
+
+        print("Moving " + Stats.GetSpeed() +" - - "+ Time.deltaTime);
+
+        //float step = 4 * Time.deltaTime;
+        print("before " + transform.position);
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(position.x, transform.position.y, position.z), step);
+        print("after " + transform.position);
         if (Vector3.Distance(transform.position, position) < 0.1)
             Moving = false;
     }

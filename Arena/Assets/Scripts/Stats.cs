@@ -6,14 +6,14 @@ using UnityEngine.UI;
 
 public class Stats : NetworkBehaviour
 {
-	public Text Text;
+	//public Text Text;
 	public RectTransform healthBar;
 
     public float Health;
     public int Range;
     public float Speed;
 
-
+    [SyncVar]
     float speedMultiplier;
     [SyncVar]
     float CurrentHealth;
@@ -119,7 +119,6 @@ public class Stats : NetworkBehaviour
         if (!isServer) return;
 
         ResetTemporaryValues();
-        speedMultiplier = 4;
 
         foreach (var effect in SyncEffects)
         {

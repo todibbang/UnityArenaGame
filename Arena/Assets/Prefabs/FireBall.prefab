@@ -155,8 +155,8 @@ MonoBehaviour:
   StartPosition: {x: 0, y: 0, z: 0}
   TargetPosition: {x: 0, y: 0, z: 0}
   Sender: {fileID: 0}
-  ProjectileSpeed: 20
-  TravelLength: 20
+  ProjectileSpeed: 40
+  TravelLength: 40
 --- !u!114 &114811610343676552
 MonoBehaviour:
   m_ObjectHideFlags: 1

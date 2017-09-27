@@ -221,26 +221,31 @@ public class AbilityCaster : NetworkBehaviour {
 		switch (type)
 		{
 		case Ability.AbilityType.TargetAbility:
-			CmdSpawnTarget (name, target, gameObject);
+			CmdSpawnTarget (name, target);
 			break;
 		case Ability.AbilityType.SkillShotAbility:
-			CmdSpawnSkillShot (name, position, gameObject);
+			CmdSpawnSkillShot (name, position);
 			break;
 		case Ability.AbilityType.Aoe:
-			CmdSpawnAoe (name, position, gameObject);
+			CmdSpawnAoe (name, position);
 			break;
 		}
 	}
 
 	[Command]
-	public void CmdSpawnSkillShot(string name, Vector3 position, GameObject sender)
+	public void CmdSpawnSkillShot(string name, Vector3 position)
 	{
 		Ability abil;
 		GameObject newAbility = NewAbility(name, out abil);
-		abil.Prepare(position, sender);
+
+        abil.Sender = gameObject;
+        abil.StartPosition = gameObject.transform.position;
+        abil.TargetPosition = new Vector3(position.x * 10000 + gameObject.transform.position.x, transform.position.y, position.z * 10000 + gameObject.transform.position.z);
+
+        //abil.Prepare(position, sender);
 		abil.IgnoreCaster();
 
-		var StartPosition = sender.transform.position;
+		var StartPosition = gameObject.transform.position;
 		newAbility.transform.position = StartPosition;
 		var v2 = new Vector2(position.x * 10000 + StartPosition.x, position.z * 10000 + StartPosition.z);
 		var v1 = new Vector2(StartPosition.x, StartPosition.z);
@@ -254,18 +259,18 @@ public class AbilityCaster : NetworkBehaviour {
 	}
 
 	[Command]
-	public void CmdSpawnAoe(string name, Vector3 position, GameObject sender)
+	public void CmdSpawnAoe(string name, Vector3 position)
 	{
 		Ability abil;
 		GameObject newAbility = NewAbility(name, out abil);
-		abil.Prepare(position, sender);
+		abil.Prepare(position, gameObject);
 		abil.IgnoreCaster();
 
 		var TargetPosition = new Vector3(position.x, newAbility.transform.position.y, position.z);
 
 		newAbility.transform.position = TargetPosition;
 		var v2 = new Vector2(TargetPosition.x, TargetPosition.z);
-		var v1 = new Vector2(sender.transform.position.x, sender.transform.position.z);
+		var v1 = new Vector2(gameObject.transform.position.x, gameObject.transform.position.z);
 		Vector2 diference = v2 - v1;
 		float sign = (v2.y > v1.y) ? -1.0f : 1.0f;
 		var Angel = Vector2.Angle(Vector2.right, diference) * sign;
@@ -275,13 +280,13 @@ public class AbilityCaster : NetworkBehaviour {
 	}
 
 	[Command]
-	public void CmdSpawnTarget(string name, GameObject target, GameObject sender)
+	public void CmdSpawnTarget(string name, GameObject target)
 	{
 		Ability abil;
 		GameObject newAbility = NewAbility(name, out abil);
-		abil.Prepare(target, sender);
+		abil.Prepare(target, gameObject);
 		abil.IgnoreCaster();
-		newAbility.transform.position = sender.transform.position;
+		newAbility.transform.position = gameObject.transform.position;
 
 		NetworkServer.Spawn(newAbility);
 	}
