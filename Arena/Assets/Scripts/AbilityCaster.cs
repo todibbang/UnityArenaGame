@@ -248,7 +248,7 @@ public class AbilityCaster : NetworkBehaviour {
 		float sign = (v2.y > v1.y) ? -1.0f : 1.0f;
 		var Angel = Vector2.Angle(Vector2.right, diference) * sign;
 		newAbility.transform.Rotate(new Vector3(0, Angel + 90, 0));
-		newAbility.GetComponent<Rigidbody>().velocity = newAbility.transform.forward * 6;
+		newAbility.GetComponent<Rigidbody>().velocity = newAbility.transform.forward * newAbility.GetComponent<SkillShotAbility>().ProjectileSpeed;
 
 		NetworkServer.Spawn(newAbility);
 	}

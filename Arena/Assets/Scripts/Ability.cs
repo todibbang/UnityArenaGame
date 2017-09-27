@@ -41,6 +41,8 @@ public abstract class Ability : NetworkBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
+        //if (!isServer) return;
+
 		print (other.tag);
 
 		if (other.tag == "Ability" || other.tag == "Ground" || other.tag == "Untagged")
@@ -68,9 +70,12 @@ public abstract class Ability : NetworkBehaviour {
                 if (hitID != senderID) return;
                 break;
         }
-        other.gameObject.SendMessage("Hit", new Effect(Effect, transform.position));
+        //other.gameObject.SendMessage("Hit", new Effect(Effect, transform.position));
+        print("sending effect");
+        other.gameObject.GetComponent<Stats>().Hit(new Effect(Effect, transform.position));
 
-		AbilityReaction(CollisionReaction);
+
+        AbilityReaction(CollisionReaction);
     }
 
     public void IgnoreCaster()

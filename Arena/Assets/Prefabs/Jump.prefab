@@ -121,12 +121,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bdbef354fa50364798d1a31ced8cd09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Effecttype: 6
-  Damage: 0
+  Effecttype: 7
+  Effectivness: 0
   Duration: 10000
   EffectTimes: 0
-  OverrulesControles: 0
   EffectCooldown: 0
+  Position: {x: 0, y: 0, z: 0}
+  TimeLived: 0
 --- !u!114 &114646974441990252
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -146,8 +147,6 @@ MonoBehaviour:
   CollisionReaction: 4
   LifeExpired: 1
   SecondaryAbility: {fileID: 0}
-  AbilityCaster: {fileID: 1453245980911748, guid: fc01375ab89ae0b4295ac4935b659653,
-    type: 2}
   TargetGameObject: {fileID: 0}
   StartPosition: {x: 0, y: 0, z: 0}
   TargetPosition: {x: 0, y: 0, z: 0}

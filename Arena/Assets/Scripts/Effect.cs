@@ -6,34 +6,39 @@ public class Effect : MonoBehaviour {
 
     int SenderId;
     public EffectType Effecttype;
-	public float Damage;
+	public float Effectivness;
 	public int Duration;
-	public int EffectTimes = 1;
-	public bool OverrulesControles;
+	public int EffectTimes;
 	public float EffectCooldown;
 
-	Vector3 Position;
-	int TimeLived;
+    public Vector3 Position;
+    public int TimeLived;
 
     public enum EffectType
     {
-        MagicDamage, PhysicalDamage, Heal, Stun, Slow, Root, MoveTo, BlinkTo
+        MagicDamage, PhysicalDamage, Heal, Stun, Slow, Root, Silence, MoveTo, BlinkTo
     }
 
 	public Effect(Effect effect, Vector3 position) {
-		this.SenderId = effect.SenderId;
+        print("receiving effect");
+        this.SenderId = effect.SenderId;
 		this.Effecttype = effect.Effecttype;
-		this.Damage = effect.Damage;
+		this.Effectivness = effect.Effectivness;
 		this.Duration = effect.Duration;
 		this.EffectTimes = effect.EffectTimes;
-		this.OverrulesControles = effect.OverrulesControles;
 		this.EffectCooldown = effect.EffectCooldown;
 		this.Position = position;
-	}
+        this.TimeLived = 0;
+    }
 	
 	public void FrameLived() {
 		TimeLived++;
 	}
+
+    public bool EffectiveNow()
+    {
+        return Duration == 0 || EffectTimes == 0 ? true : TimeLived % (Duration / EffectTimes) == 0;
+    }
 
 	public bool Active() {
 		return TimeLived < Duration;

@@ -19,12 +19,12 @@ public class BodyController : NetworkBehaviour
 
     bool Moving;
     Vector3 MoveToPosition;
-	List<Effect> Effects = new List<Effect>();
 
     public override void OnStartLocalPlayer()
     {
         GetComponent<MeshRenderer>().material.color = Color.blue;
         Camera.enabled = true;
+        GameObject.Find("LoadCamera").SetActive(false);
     }
 
 	void Start() {
@@ -35,39 +35,9 @@ public class BodyController : NetworkBehaviour
     void Update()
     {
         if (!isLocalPlayer) return;
+
+        //Stats.ProcessEffects();
         
-		var ControlLost = false;
-		List<Effect> EffectsToLose = new List<Effect>();
-		foreach (var effect in Effects) {
-			if (effect.OverrulesControles)
-				ControlLost = true;
-
-			switch (effect.Effecttype) {
-			case Effect.EffectType.MoveTo:
-				float step = 30 * Time.deltaTime;
-				transform.position = Vector3.MoveTowards (transform.position, effect.GetPosition (), step);
-				if (Vector3.Distance (transform.position, effect.GetPosition ()) < 0.1)
-					effect.SetInactive();
-				break;
-			case Effect.EffectType.BlinkTo:
-				transform.position = effect.GetPosition();
-				effect.SetInactive();
-				break;
-			}
-
-			effect.FrameLived ();
-			if (!effect.Active ()) {
-				EffectsToLose.Add (effect);
-			}
-		}
-		foreach (var effect in EffectsToLose) {
-			Effects.Remove (effect);
-			Destroy (effect);
-		}
-
-		if (ControlLost)
-			return;
-
 		if (Input.GetMouseButtonDown (0)) {
 			var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit;
@@ -81,31 +51,40 @@ public class BodyController : NetworkBehaviour
 			}
 		}
 
-		if (Input.GetKey (KeyCode.W))
-			PlayerMove (transform.position + (transform.rotation * Vector3.forward));
-		if (Input.GetKey (KeyCode.A))
-			PlayerMove (transform.position + (transform.rotation * Vector3.left));
-		if (Input.GetKey (KeyCode.D))
-			PlayerMove (transform.position + (transform.rotation * Vector3.right));
-		if (Input.GetKey (KeyCode.S))
-			PlayerMove (transform.position + (transform.rotation * Vector3.back));
-		if (Input.GetKey (KeyCode.Q)) 
-			transform.eulerAngles = transform.eulerAngles - new Vector3(0,2,0);
-		if (Input.GetKey (KeyCode.E)) 
-			transform.eulerAngles = transform.eulerAngles - new Vector3(0,-2,0);
-		if (Input.GetMouseButton (1)) 
-			transform.eulerAngles = transform.eulerAngles - new Vector3 (0, Input.GetAxis ("Mouse X") * -3, 0);
-		if (Input.GetKey(KeyCode.Space)) 
-			gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0,JumpSpeed,0));
-
+        if(Stats.HasOverruleMoveTo())
+        {
+            Move(Stats.GetMoveToPosition());
+        } else
+        {
+            if (Input.GetKey(KeyCode.W))
+                PlayerMove(transform.position + (transform.rotation * Vector3.forward));
+            if (Input.GetKey(KeyCode.A))
+                PlayerMove(transform.position + (transform.rotation * Vector3.left));
+            if (Input.GetKey(KeyCode.D))
+                PlayerMove(transform.position + (transform.rotation * Vector3.right));
+            if (Input.GetKey(KeyCode.S))
+                PlayerMove(transform.position + (transform.rotation * Vector3.back));
+            if (Input.GetKey(KeyCode.Q))
+                transform.eulerAngles = transform.eulerAngles - new Vector3(0, 2, 0);
+            if (Input.GetKey(KeyCode.E))
+                transform.eulerAngles = transform.eulerAngles - new Vector3(0, -2, 0);
+            if (Input.GetMouseButton(1))
+                transform.eulerAngles = transform.eulerAngles - new Vector3(0, Input.GetAxis("Mouse X") * -3, 0);
+            if (Input.GetKey(KeyCode.Space))
+                gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, JumpSpeed, 0));
+        }
+        
         if (Moving)
 			Move(MoveToPosition);
+
+        print(Stats.GetSpeed());
+        //Stats.ResetTemporaryValues();
     }
 
 	void PlayerMove(Vector3 position) {
 		Caster.OverruleMovement();
 		Moving = false;
-		Move (position);
+        Move (position);
 	}
 
     void Move(Vector3 position)
@@ -121,10 +100,4 @@ public class BodyController : NetworkBehaviour
 			Caster.OverruleMovement();
 		}
 	}
-
-    void Hit(Effect effect)
-    {
-        print("Body hit with " + effect.Effecttype);
-		Effects.Add (effect);
-    }
 }
