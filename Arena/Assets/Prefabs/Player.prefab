@@ -146,13 +146,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1486082605367374}
-  m_LocalRotation: {x: 0.22818094, y: 0, z: 0, w: 0.97361875}
-  m_LocalPosition: {x: 0, y: 6.8, z: -9.5}
+  m_LocalRotation: {x: 0.16065644, y: 0, z: 0, w: 0.9870104}
+  m_LocalPosition: {x: 0, y: 5.4, z: -9.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4077769091127718}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 26.38, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 18.49, y: 0, z: 0}
 --- !u!4 &4849725079765076
 Transform:
   m_ObjectHideFlags: 1
@@ -196,6 +196,8 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
+  m_AllowMSAA: 1
+  m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
@@ -230,6 +232,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23103112888858452
 MeshRenderer:
@@ -261,6 +264,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33166632175654718
 MeshFilter:
@@ -390,6 +394,7 @@ MonoBehaviour:
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
   m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
@@ -483,6 +488,7 @@ MonoBehaviour:
   Health: 20
   Range: 10
   Speed: 8
+  CurrentHealth: 0
 --- !u!114 &114927193276628504
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -549,7 +555,7 @@ Canvas:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1451999758233796}
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_RenderMode: 2
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
@@ -558,6 +564,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0

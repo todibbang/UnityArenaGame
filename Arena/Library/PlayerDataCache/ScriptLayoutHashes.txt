@@ -12,8 +12,8 @@ ff05dcdf90651c3d98a9cad3df5e471e UnityEngine.Timeline.dll:UnityEngine.Timeline.C
 7b848b7feaa524953d09fc1851efa6da UnityEngine.Timeline.dll:UnityEngine.Timeline.GroupTrack
 7b848b7feaa524953d09fc1851efa6da UnityEngine.Timeline.dll:UnityEngine.Timeline.PlayableTrack
 c24a21b131bfa67be1162db2cba4b52b UnityEngine.Timeline.dll:UnityEngine.Timeline.TimelineAsset
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Billboard
 ce5d7aee2de6d394a35cfa275ec56197 Assembly-CSharp.dll:.SkillShotAbility
-133d32b845548beb1dac1541a8f63c92 Assembly-CSharp.dll:.UIController
 a35dc9cca2faebc5f5f1aeb9e8e47bbe UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.UI.dll:UnityEngine.EventSystems.BaseInput
 49cd62a578efc0a599b810a2b66cd49c UnityEngine.UI.dll:UnityEngine.UI.Button
@@ -109,8 +109,8 @@ bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.Audi
 463516d5b5fe8e67a0a24c48f2095b04 UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInputModule
 c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingCollider
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingRenderer
-60f91ce9840f5811fed048b4fbde5965 Assembly-CSharp.dll:.Stats
-c4c7f1cf6e12bed7ad9c15f735497571 Assembly-CSharp.dll:.Effect
+33fb7b1bd1798fae19a6612370f20607 Assembly-CSharp.dll:.Stats
+a3fd858e2aaae2a39a46e4d1dab1ab1f Assembly-CSharp.dll:.Effect
 e4dc249593390efe3156028237d8999b Assembly-CSharp.dll:.BodyController
 15b3bb11a0415594193a0576944049c4 Assembly-CSharp.dll:.TargetAbility
 c7471c6edf59a75e2a72567b2260277c Assembly-CSharp.dll:.AoeAbility
@@ -136,7 +136,4 @@ bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.Audi
 463516d5b5fe8e67a0a24c48f2095b04 UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInputModule
 c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingCollider
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingRenderer
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Projectile
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Spawner
 e96b2679402db4639f84866547797942 Assembly-CSharp.dll:.AbilityCaster
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.StateControllerScript

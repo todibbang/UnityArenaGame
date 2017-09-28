@@ -77,6 +77,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33245011629908668
 MeshFilter:
@@ -117,6 +118,7 @@ MonoBehaviour:
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
   m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
@@ -132,11 +134,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Effecttype: 0
-  Damage: 0
+  Effectivness: 3
   Duration: 0
   EffectTimes: 0
-  OverrulesControles: 0
   EffectCooldown: 0
+  Position: {x: 0, y: 0, z: 0}
+  TimeLived: 0
 --- !u!114 &114486803949359476
 MonoBehaviour:
   m_ObjectHideFlags: 1

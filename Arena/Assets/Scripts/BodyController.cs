@@ -32,12 +32,9 @@ public class BodyController : NetworkBehaviour
 		TeamID = UnityEngine.Random.Range(0, 100000);
 	}
 
-    void Update()
-    {
-        if (!isLocalPlayer) return;
+	void FixedUpdate() {
+		if (!isLocalPlayer) return;
 
-        //Stats.ProcessEffects();
-        
 		if (Input.GetMouseButtonDown (0)) {
 			var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit;
@@ -51,43 +48,39 @@ public class BodyController : NetworkBehaviour
 			}
 		}
 
-        if (Stats.HasOverruleBlinkTo())
-        {
-            transform.position = Stats.GetMoveToPosition();
-            Moving = false;
-            //Stats.CurrentHealth = 0;
-        }
-        else if(Stats.HasOverruleMoveTo())
-        {
-            Move(Stats.GetMoveToPosition());
-        }
-        else
-        {
-            if (Input.GetKey(KeyCode.W))
-                PlayerMove(transform.position + (transform.rotation * Vector3.forward));
-            if (Input.GetKey(KeyCode.A))
-                PlayerMove(transform.position + (transform.rotation * Vector3.left));
-            if (Input.GetKey(KeyCode.D))
-                PlayerMove(transform.position + (transform.rotation * Vector3.right));
-            if (Input.GetKey(KeyCode.S))
-                PlayerMove(transform.position + (transform.rotation * Vector3.back));
-            if (Input.GetKey(KeyCode.Q))
-                transform.eulerAngles = transform.eulerAngles - new Vector3(0, 2, 0);
-            if (Input.GetKey(KeyCode.E))
-                transform.eulerAngles = transform.eulerAngles - new Vector3(0, -2, 0);
-            if (Input.GetMouseButton(1))
-                transform.eulerAngles = transform.eulerAngles - new Vector3(0, Input.GetAxis("Mouse X") * -3, 0);
-            if (Input.GetKey(KeyCode.Space))
-                gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, JumpSpeed, 0));
-        }
-        
-        if (Moving)
+		if (Stats.HasOverruleBlinkTo())
+		{
+			transform.position = Stats.GetMoveToPosition();
+			Moving = false;
+			//Stats.CurrentHealth = 0;
+		}
+		else if(Stats.HasOverruleMoveTo())
+		{
+			Move(Stats.GetMoveToPosition());
+		}
+		else
+		{
+			if (Input.GetKey(KeyCode.W))
+				PlayerMove(transform.position + (transform.rotation * Vector3.forward));
+			if (Input.GetKey(KeyCode.A))
+				PlayerMove(transform.position + (transform.rotation * Vector3.left));
+			if (Input.GetKey(KeyCode.D))
+				PlayerMove(transform.position + (transform.rotation * Vector3.right));
+			if (Input.GetKey(KeyCode.S))
+				PlayerMove(transform.position + (transform.rotation * Vector3.back));
+			if (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.LeftArrow))
+				transform.eulerAngles = transform.eulerAngles - new Vector3(0, 2, 0);
+			if (Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.RightArrow))
+				transform.eulerAngles = transform.eulerAngles - new Vector3(0, -2, 0);
+			if (Input.GetMouseButton(1))
+				transform.eulerAngles = transform.eulerAngles - new Vector3(0, Input.GetAxis("Mouse X") * -3, 0);
+			//if (Input.GetKey(KeyCode.Space))
+			//	gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, JumpSpeed, 0));
+		}
+
+		if (Moving)
 			Move(MoveToPosition);
-
-
-        print(Stats.GetSpeed());
-        //Stats.ResetTemporaryValues();
-    }
+	}
 
 	void PlayerMove(Vector3 position) {
 		Caster.OverruleMovement();

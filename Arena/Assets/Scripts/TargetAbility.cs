@@ -61,7 +61,7 @@ public class TargetAbility : Ability {
 		transform.position = StartPosition;
 	}*/
 
-	void Update () {
+	void FixedUpdate () {
 		Vector3 position = new Vector3();
 		if (TargetGameObject != null) position = TargetGameObject.transform.position;
 		else position = TargetPosition;

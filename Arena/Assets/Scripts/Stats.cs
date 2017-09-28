@@ -30,10 +30,15 @@ public class Stats : NetworkBehaviour
     List<Effect> SyncEffects = new List<Effect>();
     List<Effect> EffectsToLose = new List<Effect>();
 
+	public void SetStats(Stats newStats) {
+
+	}
+
+	/*
     void Start()
     {
 		CurrentHealth = Health;
-    }
+    }*/
 
     void UpdateHealth(float current)
     {
@@ -42,7 +47,7 @@ public class Stats : NetworkBehaviour
         healthBar.anchoredPosition = new Vector2(200 - (w / 2), 0);
     }
 
-	void Update() {
+	void FixedUpdate() {
         ProcessEffects();
     }
 
@@ -72,6 +77,8 @@ public class Stats : NetworkBehaviour
 
     public Vector3 GetMoveToPosition()
     {
+		//hasOverruleMoveTo = true;
+		//hasOverruleBlinkTo = true;
         return overruleMoveTo;
     }
 

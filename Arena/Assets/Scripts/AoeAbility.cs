@@ -33,7 +33,7 @@ public class AoeAbility : Ability {
         transform.Rotate(new Vector3(0, Angel - 90, 0));  */
     }
 
-    void Update () {
+    void FixedUpdate () {
 		LivedTime++;
 		if(LivedTime >= LiveDuration) AbilityReaction(LifeExpired);
 	}
