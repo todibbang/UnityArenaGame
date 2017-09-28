@@ -7,8 +7,9 @@ using System.Linq;
 
 public class AbilityCaster : NetworkBehaviour {
 
-	public GameObject AutoAttack;
+	//public GameObject AutoAttack;
 	public GameObject[] Abilities;
+    float[] cooldowns = new float[5];
 
     float CastTime;
     int CastTimes;
@@ -57,24 +58,23 @@ public class AbilityCaster : NetworkBehaviour {
     {
         if (!isLocalPlayer) return;
 
-		if (Input.GetMouseButtonDown (1)) {
+        for (int c = 0; c < cooldowns.Length; c++)
+        {
+            if(cooldowns[c] > 0) cooldowns[c] -= Time.deltaTime;
+        }
+
+        if (Input.GetMouseButtonDown (1)) {
 			var hit = GetRayhit ("Body");
 			if (hit.collider != null && hit.collider.tag == "Enemy") {
-				UseAbility (0, AutoAttack);
+				UseAbility (0, Abilities[0]);
 				return;
 			}
 		}
 
-		if (Input.GetKeyDown(KeyCode.Alpha1)) UseAbility(0, Abilities[0]);
-		if (Input.GetKeyDown(KeyCode.Alpha2)) UseAbility(1, Abilities[1]);
-		if (Input.GetKeyDown(KeyCode.Alpha3)) UseAbility(2, Abilities[2]);
-		if (Input.GetKeyDown(KeyCode.Alpha4)) UseAbility(3, Abilities[3]);
-		if (Input.GetKeyDown(KeyCode.Alpha5)) UseAbility(4, Abilities[4]);
-		if (Input.GetKeyDown(KeyCode.Alpha6)) UseAbility(5, Abilities[5]);
-		if (Input.GetKeyDown(KeyCode.Alpha7)) UseAbility(6, Abilities[6]);
-		if (Input.GetKeyDown(KeyCode.Alpha8)) UseAbility(7, Abilities[7]);
-		if (Input.GetKeyDown(KeyCode.Alpha9)) UseAbility(8, Abilities[8]);
-		if (Input.GetKeyDown(KeyCode.Alpha0)) UseAbility(9, Abilities[9]);
+		if (Input.GetKeyDown(KeyCode.Alpha1)) UseAbility(1, Abilities[1]);
+		if (Input.GetKeyDown(KeyCode.Alpha2)) UseAbility(2, Abilities[2]);
+		if (Input.GetKeyDown(KeyCode.Alpha3)) UseAbility(3, Abilities[3]);
+		if (Input.GetKeyDown(KeyCode.Alpha4)) UseAbility(4, Abilities[4]);
 
 		if (!Active) return;
 
@@ -99,7 +99,14 @@ public class AbilityCaster : NetworkBehaviour {
 		{
             CastTime = 0;
 			SpawnAbility (Abilities [AbilityNumber], TargetGameObject, TargetDirection);
-			/*
+
+            for (int c = 0; c < cooldowns.Length; c++)
+            {
+                if (cooldowns[c] < 0.5) cooldowns[c] = 0.5f;
+            }
+            cooldowns[AbilityNumber] = Abilities[AbilityNumber].GetComponent<Ability>().Cooldown;
+
+            /*
 			switch (currentActivityType)
 			{
 			case Ability.AbilityType.TargetAbility:
@@ -113,7 +120,7 @@ public class AbilityCaster : NetworkBehaviour {
 				break;
 			} */
 
-			CastTimes++;
+            CastTimes++;
 			if (AbilityCastTimes > 0 && CastTimes >= AbilityCastTimes)
 				Stop ();
 		}
@@ -129,18 +136,20 @@ public class AbilityCaster : NetworkBehaviour {
 
 	public void UseAbility(int i, GameObject ability)
 	{
+        if (cooldowns[i] > 0.01f) return;
+
 		var t = ability.GetComponent<TargetAbility>();
 		var a = ability.GetComponent<AoeAbility>();
 		var s = ability.GetComponent<SkillShotAbility>();
 		if (t != null) UseTargetAbility(i, ability);
 		if (a != null) UseAoeAbility(i, ability);
 		if (s != null) UseSkillShotAbility(i, ability);
-	}
+    }
 
 
 	public void UseAoeAbility(int i, GameObject ability)
 	{
-		RaycastHit hit = GetRayhit("Ground");
+		RaycastHit hit = GetRayhit("Terrain");
 		if (hit.collider == null) return;
 		var targetAbility = ability.GetComponent<AoeAbility>();
 		StartCasting(i, targetAbility.CastRange == 0 ? transform.position : new Vector3(hit.point.x, transform.position.y, hit.point.z), null);
@@ -191,7 +200,7 @@ public class AbilityCaster : NetworkBehaviour {
 
 	public void UseSkillShotAbility(int i, GameObject ability)
 	{
-		RaycastHit hit = GetRayhit("Ground");
+		RaycastHit hit = GetRayhit("");
 		if (hit.collider == null) return;
 		var targetAbility = ability.GetComponent<SkillShotAbility>();
 		StartCasting(i, new Vector3(hit.point.x, transform.position.y, hit.point.z), null);
@@ -202,7 +211,11 @@ public class AbilityCaster : NetworkBehaviour {
 	{
 		RaycastHit hit;
 		var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		if (Physics.Raycast(ray, out hit, 10000, (1 << LayerMask.NameToLayer(layer))))
+        if (string.IsNullOrEmpty(layer))
+            if (Physics.Raycast(ray, out hit))
+                return hit;
+
+        if (Physics.Raycast(ray, out hit, 10000, (1 << LayerMask.NameToLayer(layer))))
 			return hit;
 		return hit;
 	}
@@ -245,7 +258,9 @@ public class AbilityCaster : NetworkBehaviour {
         //abil.Prepare(position, gameObject);
 		abil.IgnoreCaster();
 
-		var StartPosition = gameObject.transform.position;
+        print("newAbility.transform.localScale.y " + newAbility.transform.localScale.y);
+
+		var StartPosition = new Vector3( gameObject.transform.position.x, Mathf.Max(1.5f, newAbility.transform.localScale.y / 2.0f + 0.3f), gameObject.transform.position.z);
 		newAbility.transform.position = StartPosition;
 		var v2 = new Vector2(position.x * 10000 + StartPosition.x, position.z * 10000 + StartPosition.z);
 		var v1 = new Vector2(StartPosition.x, StartPosition.z);

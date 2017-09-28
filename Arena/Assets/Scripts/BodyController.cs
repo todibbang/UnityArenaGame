@@ -30,6 +30,7 @@ public class BodyController : NetworkBehaviour
 	void Start() {
 		ID = UnityEngine.Random.Range(0, 100000);
 		TeamID = UnityEngine.Random.Range(0, 100000);
+        transform.position = new Vector3(transform.position.x, 1.5f, transform.position.z);
 	}
 
 	void FixedUpdate() {
@@ -52,7 +53,6 @@ public class BodyController : NetworkBehaviour
 		{
 			transform.position = Stats.GetMoveToPosition();
 			Moving = false;
-			//Stats.CurrentHealth = 0;
 		}
 		else if(Stats.HasOverruleMoveTo())
 		{
@@ -60,7 +60,7 @@ public class BodyController : NetworkBehaviour
 		}
 		else
 		{
-			if (Input.GetKey(KeyCode.W))
+            if (Input.GetKey(KeyCode.W))
 				PlayerMove(transform.position + (transform.rotation * Vector3.forward));
 			if (Input.GetKey(KeyCode.A))
 				PlayerMove(transform.position + (transform.rotation * Vector3.left));
@@ -90,16 +90,8 @@ public class BodyController : NetworkBehaviour
 
     void Move(Vector3 position)
     {
-        
-
         float step = Stats.GetSpeed() * Time.deltaTime;
-
-        print("Moving " + Stats.GetSpeed() +" - - "+ Time.deltaTime);
-
-        //float step = 4 * Time.deltaTime;
-        print("before " + transform.position);
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(position.x, transform.position.y, position.z), step);
-        print("after " + transform.position);
         if (Vector3.Distance(transform.position, position) < 0.1)
             Moving = false;
     }

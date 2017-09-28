@@ -11,7 +11,7 @@ public abstract class Ability : NetworkBehaviour {
     public int CastTime;
     public int ExecutionTimes = 1;
     public bool CanMove;
-
+    public float Cooldown;
 	public InterractsWith Interraction;
 
     public Reaction CollisionReaction;
@@ -51,31 +51,37 @@ public abstract class Ability : NetworkBehaviour {
 		print (other.tag + " - Still?? " + ignoreCaster);
 
 
-
-        int hitID = other.gameObject.GetComponent<BodyController>().ID, hitTeam = other.gameObject.GetComponent<BodyController>().TeamID;
-        int senderID = Sender.gameObject.GetComponent<BodyController>().ID, senderTeam = Sender.gameObject.GetComponent<BodyController>().TeamID;
-
-        switch (Interraction)
+        if(other.tag != "Terrain")
         {
-            case InterractsWith.Enemy:
-                if (hitTeam == senderTeam) return;
-                break;
-            case InterractsWith.Friendly:
-                if (hitTeam != senderTeam || hitID == senderID) return;
-                break;
-            case InterractsWith.FriendlyAndSelf:
-                if (hitTeam != senderTeam || hitID == senderID && ignoreCaster) return;
-                break;
-            case InterractsWith.Self:
-                if (hitID != senderID) return;
-                break;
+            int hitID = other.gameObject.GetComponent<BodyController>().ID, hitTeam = other.gameObject.GetComponent<BodyController>().TeamID;
+            int senderID = Sender.gameObject.GetComponent<BodyController>().ID, senderTeam = Sender.gameObject.GetComponent<BodyController>().TeamID;
+
+            switch (Interraction)
+            {
+                case InterractsWith.Enemy:
+                    if (hitTeam == senderTeam) return;
+                    break;
+                case InterractsWith.Friendly:
+                    if (hitTeam != senderTeam || hitID == senderID) return;
+                    break;
+                case InterractsWith.FriendlyAndSelf:
+                    if (hitTeam != senderTeam || hitID == senderID && ignoreCaster) return;
+                    break;
+                case InterractsWith.Self:
+                    if (hitID != senderID) return;
+                    break;
+            }
+            //other.gameObject.SendMessage("Hit", new Effect(Effect, transform.position));
+            print("sending effect");
+            other.gameObject.GetComponent<Stats>().Hit(new Effect(Effect, transform.position));
+            AbilityReaction(CollisionReaction);
         }
-        //other.gameObject.SendMessage("Hit", new Effect(Effect, transform.position));
-        print("sending effect");
-        other.gameObject.GetComponent<Stats>().Hit(new Effect(Effect, transform.position));
-
-
-        AbilityReaction(CollisionReaction);
+        else
+        {
+            AbilityReaction(CollisionReaction);
+            Destroy(gameObject);
+        }
+        
     }
 
     public void IgnoreCaster()

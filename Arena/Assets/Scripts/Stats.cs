@@ -8,14 +8,14 @@ public class Stats : NetworkBehaviour
 {
 	public RectTransform healthBar;
 
+    [SyncVar]
     public float Health;
-    public int Range;
     public float Speed;
 
     [SyncVar]
     float speedMultiplier;
     [SyncVar(hook = "UpdateHealth")]
-    public float CurrentHealth;
+    float CurrentHealth;
     [SyncVar]
     bool canMove;
     [SyncVar]
@@ -31,7 +31,9 @@ public class Stats : NetworkBehaviour
     List<Effect> EffectsToLose = new List<Effect>();
 
 	public void SetStats(Stats newStats) {
-
+        Health = newStats.Health;
+        Speed = newStats.Speed;
+        CurrentHealth = Health;
 	}
 
 	/*
@@ -50,11 +52,11 @@ public class Stats : NetworkBehaviour
 	void FixedUpdate() {
         ProcessEffects();
     }
-
+    /*
     public bool InRange(GameObject target)
     {
         return Vector3.Distance(transform.position, target.transform.position) < Range;
-    }
+    }*/
 
     public bool InRange(GameObject target, float targetAbilityRange)
     {

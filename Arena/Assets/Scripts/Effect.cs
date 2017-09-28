@@ -9,10 +9,10 @@ public class Effect : MonoBehaviour {
 	public float Effectivness;
 	public int Duration;
 	public int EffectTimes;
-	public float EffectCooldown;
+	//public float EffectCooldown;
 
-    public Vector3 Position;
-    public int TimeLived;
+    Vector3 Position;
+    int TimeLived;
 
     public enum EffectType
     {
@@ -26,7 +26,7 @@ public class Effect : MonoBehaviour {
 		this.Effectivness = effect.Effectivness;
 		this.Duration = effect.Duration;
 		this.EffectTimes = effect.EffectTimes;
-		this.EffectCooldown = effect.EffectCooldown;
+		//this.EffectCooldown = effect.EffectCooldown;
 		this.Position = position;
         this.TimeLived = 0;
     }

@@ -11,9 +11,11 @@ public class HeroSelector : MonoBehaviour {
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.tag == "Ground")
+		if (other.tag != "Player")
 			return; 
 		other.gameObject.GetComponent<AbilityCaster> ().Abilities = Abilities;
 		other.gameObject.GetComponent<Stats> ().SetStats(Stats);
+
+        other.gameObject.transform.position = GameObject.Find("MapSelectSpawn").transform.position;
 	}
 }
