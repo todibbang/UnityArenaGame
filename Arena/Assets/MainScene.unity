@@ -245,12 +245,12 @@ MonoBehaviour:
   m_OfflineScene: 
   m_OnlineScene: 
   m_SpawnPrefabs:
-  - {fileID: 1518482883245924, guid: 0fa07fc7b69ba724db37177caeff4685, type: 2}
   - {fileID: 1808128945360492, guid: 50c479a88a2584f82981c4e8ce28bf5f, type: 2}
-  - {fileID: 1199030864639636, guid: 80ffb21afc2086844829ee8da7727b59, type: 2}
-  - {fileID: 1964609554678804, guid: 5beb1012117287d479bbd797693efeae, type: 2}
   - {fileID: 1751195503186270, guid: 73f2e6b73349c744485477f6ba88f59f, type: 2}
+  - {fileID: 1964609554678804, guid: 5beb1012117287d479bbd797693efeae, type: 2}
+  - {fileID: 1518482883245924, guid: 0fa07fc7b69ba724db37177caeff4685, type: 2}
   - {fileID: 1807163428843008, guid: 25ae18d1e1d864b5489c8255f6b923c1, type: 2}
+  - {fileID: 1199030864639636, guid: 80ffb21afc2086844829ee8da7727b59, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -280,7 +280,7 @@ MonoBehaviour:
     m_ReactorMaximumReceivedMessages: 1024
     m_ReactorMaximumSentMessages: 1024
     m_MaxPacketSize: 2000
-  m_Channels: 0500000000000000
+  m_Channels: 
   m_UseWebSockets: 0
   m_UseSimulator: 0
   m_SimulatedLatency: 1

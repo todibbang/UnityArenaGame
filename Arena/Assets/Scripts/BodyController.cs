@@ -51,10 +51,17 @@ public class BodyController : NetworkBehaviour
 			}
 		}
 
-        if(Stats.HasOverruleMoveTo())
+        if (Stats.HasOverruleBlinkTo())
+        {
+            transform.position = Stats.GetMoveToPosition();
+            Moving = false;
+            //Stats.CurrentHealth = 0;
+        }
+        else if(Stats.HasOverruleMoveTo())
         {
             Move(Stats.GetMoveToPosition());
-        } else
+        }
+        else
         {
             if (Input.GetKey(KeyCode.W))
                 PlayerMove(transform.position + (transform.rotation * Vector3.forward));

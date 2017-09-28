@@ -15,7 +15,7 @@ public class SkillShotAbility : Ability {
 
 	public override void Prepare(Vector3 clickPosition, GameObject sender)
 	{
-		//Sender = sender;
+		Sender = sender;
         //StartPosition = sender.transform.position;
         //TargetPosition = new Vector3(clickPosition.x * 10000 + sender.transform.position.x, transform.position.y, clickPosition.z * 10000 + sender.transform.position.z);
     }

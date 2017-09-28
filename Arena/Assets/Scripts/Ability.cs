@@ -41,9 +41,9 @@ public abstract class Ability : NetworkBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        //if (!isServer) return;
+        if (!isServer) return;
 
-		print (other.tag);
+		//print (other.tag);
 
 		if (other.tag == "Ability" || other.tag == "Ground" || other.tag == "Untagged")
 			return;

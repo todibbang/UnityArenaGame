@@ -242,7 +242,7 @@ public class AbilityCaster : NetworkBehaviour {
         abil.StartPosition = gameObject.transform.position;
         abil.TargetPosition = new Vector3(position.x * 10000 + gameObject.transform.position.x, transform.position.y, position.z * 10000 + gameObject.transform.position.z);
 
-        //abil.Prepare(position, sender);
+        //abil.Prepare(position, gameObject);
 		abil.IgnoreCaster();
 
 		var StartPosition = gameObject.transform.position;

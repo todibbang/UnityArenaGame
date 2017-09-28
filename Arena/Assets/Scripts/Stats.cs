@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class Stats : NetworkBehaviour
 {
-	//public Text Text;
 	public RectTransform healthBar;
 
     public float Health;
@@ -15,46 +14,19 @@ public class Stats : NetworkBehaviour
 
     [SyncVar]
     float speedMultiplier;
+    [SyncVar(hook = "UpdateHealth")]
+    public float CurrentHealth;
     [SyncVar]
-    float CurrentHealth;
     bool canMove;
+    [SyncVar]
     bool canCast;
-
+    [SyncVar]
     bool hasOverruleMoveTo;
+    [SyncVar]
+    bool hasOverruleBlinkTo;
+    [SyncVar]
     Vector3 overruleMoveTo;
-
-    //[SyncVar]
-    //List<Effect> Effects = new List<Effect>();
-
-    /*
-    public struct SyncEffect
-    {
-        int SenderId;
-        public Effect.EffectType Effecttype;
-        public float Effectivness;
-        public int Duration;
-        public int EffectTimes;
-        public float EffectCooldown;
-
-        Vector3 Position;
-        int TimeLived;
-
-        public SyncEffect(Effect effect)
-        {
-            SenderId = 0;
-            Effecttype = effect.Effecttype;
-            Effectivness = effect.Effectivness;
-            Duration = effect.Duration;
-            EffectTimes = effect.EffectTimes;
-            EffectCooldown = effect.EffectCooldown;
-            Position = effect.Position;
-            TimeLived = effect.TimeLived;
-        }
-    }*/
-
-    //public class SyncListSyncEffect : SyncListStruct<Effect> {  }
-    //public SyncListSyncEffect SyncEffects = new SyncListSyncEffect();
-    //public SyncListSyncEffect EffectsToLose = new SyncListSyncEffect();
+    
     List<Effect> SyncEffects = new List<Effect>();
     List<Effect> EffectsToLose = new List<Effect>();
 
@@ -63,12 +35,14 @@ public class Stats : NetworkBehaviour
 		CurrentHealth = Health;
     }
 
-	void Update() {
-		//print(CurrentHealth+" / "+Health);
-		var w = ((float)CurrentHealth / (float)Health * 200);
-		healthBar.sizeDelta = new Vector2(w, healthBar.sizeDelta.y);
-		healthBar.anchoredPosition = new Vector2 (200 - (w / 2), 0);
+    void UpdateHealth(float current)
+    {
+        var w = ((float)current / (float)Health * 200);
+        healthBar.sizeDelta = new Vector2(w, healthBar.sizeDelta.y);
+        healthBar.anchoredPosition = new Vector2(200 - (w / 2), 0);
+    }
 
+	void Update() {
         ProcessEffects();
     }
 
@@ -94,6 +68,8 @@ public class Stats : NetworkBehaviour
 
     public bool HasOverruleMoveTo() { return hasOverruleMoveTo; }
 
+    public bool HasOverruleBlinkTo() { return hasOverruleBlinkTo;  }
+
     public Vector3 GetMoveToPosition()
     {
         return overruleMoveTo;
@@ -112,6 +88,7 @@ public class Stats : NetworkBehaviour
         canMove = true;
         canCast = true;
         hasOverruleMoveTo = false;
+        hasOverruleBlinkTo = false;
     }
 
     public void ProcessEffects()
@@ -159,7 +136,9 @@ public class Stats : NetworkBehaviour
                         else effect.SetInactive();                    
                         break;
                     case Effect.EffectType.BlinkTo:
-                        transform.position = effect.GetPosition();
+                        hasOverruleBlinkTo = true;
+                        overruleMoveTo = effect.GetPosition();
+                        //transform.position = effect.GetPosition();
                         effect.SetInactive();
                         break;
                 }
@@ -177,11 +156,4 @@ public class Stats : NetworkBehaviour
         }
         EffectsToLose.Clear();
     }
-
-    
-	/*
-    public int[] GetHealth()
-    {
-        return new[] { Health, CurrentHealth };
-    }*/
 }
